@@ -2,284 +2,292 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PakNutrition — B2B Wholesale RFQ Portal (SilverFox Supplement)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>PakNutrition — Mobile B2B Wholesale Portal</title>
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- SheetJS (XLSX Export) -->
+  <!-- SheetJS for Mobile/Desktop Excel Export -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+    /* Disable auto-zoom on iOS inputs by ensuring 16px minimum */
+    input, select, textarea {
+      font-size: 16px !important;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
+    /* Hide scrollbars for horizontal carousel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
     }
     @media print {
       .no-print { display: none !important; }
-      .print-shadow-none { box-shadow: none !important; }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col pb-28">
 
-  <!-- TOP BRANDING & NAVIGATION -->
-  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <!-- Logo & Title -->
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/30">
-            PN
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="font-extrabold text-lg tracking-tight">PAKNUTRITION</span>
-              <span class="bg-blue-500/20 text-blue-300 text-xs px-2 py-0.5 rounded font-semibold border border-blue-500/30">B2B Commercial Portal</span>
-            </div>
-            <p class="text-xs text-slate-400">Official Wholesale Request for Quotation (RFQ) • Ref: PN-SF-2026-01</p>
-          </div>
+  <!-- MOBILE-FIRST STICKY TOP HEADER -->
+  <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-md border-b border-slate-800">
+    <div class="px-3.5 py-2.5 max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white text-base shadow-sm shrink-0">
+          PN
         </div>
-
-        <!-- Supplier & Action Buttons -->
-        <div class="flex flex-wrap items-center gap-2.5">
-          <div class="text-right hidden sm:block mr-2">
-            <div class="text-xs text-slate-400">Supplier:</div>
-            <div class="text-sm font-bold text-amber-300">SilverFox Supplement</div>
+        <div class="truncate">
+          <div class="flex items-center gap-1.5">
+            <span class="font-extrabold text-sm sm:text-base tracking-tight text-white">PAKNUTRITION</span>
+            <span class="bg-blue-500/20 text-blue-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-blue-500/30">B2B RFQ</span>
           </div>
-          
-          <button onclick="exportToExcel()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-sm hover:shadow">
-            <i class="fa-solid fa-file-excel text-sm"></i>
-            <span>Export Excel</span>
-          </button>
-
-          <button onclick="shareViaWhatsApp()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-green-600 hover:bg-green-500 text-white text-xs font-bold transition shadow-sm hover:shadow">
-            <i class="fa-brands fa-whatsapp text-sm"></i>
-            <span>Send to PakNutrition</span>
-          </button>
-
-          <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
-            <i class="fa-solid fa-print"></i>
-          </button>
+          <p class="text-[11px] text-slate-400 truncate">SilverFox Supplement • Long-term Wholesale</p>
         </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button onclick="shareViaWhatsApp()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-green-600 hover:bg-green-500 text-white text-xs font-bold transition shadow-xs">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span class="hidden sm:inline">Send</span>
+        </button>
+        <button onclick="exportToExcel()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-xs">
+          <i class="fa-solid fa-file-excel text-sm"></i>
+          <span class="hidden sm:inline">Excel</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SEARCH & CATEGORY CAROUSEL (STICKY) -->
+    <div class="bg-slate-900/95 backdrop-blur px-3 py-2 border-t border-slate-800 space-y-2">
+      <!-- Search Input -->
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search 237 products by name or brand..."
+          class="w-full pl-9 pr-8 py-2 text-sm bg-slate-800 text-white placeholder-slate-400 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 transition"
+          oninput="onSearchInput()"
+        >
+        <button 
+          id="clearSearchBtn" 
+          onclick="clearSearch()" 
+          class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-[10px]"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Category Carousel (Horizontal Swipe) -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="categoryChips">
+        <button onclick="selectCategory('all')" data-cat="all" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white border border-blue-500 shadow-xs transition">
+          All (237)
+        </button>
+        <button onclick="selectCategory('Whey & Protein Supplements')" data-cat="Whey & Protein Supplements" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Whey & Protein
+        </button>
+        <button onclick="selectCategory('Mass Gainers')" data-cat="Mass Gainers" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Mass Gainers
+        </button>
+        <button onclick="selectCategory('Creatine')" data-cat="Creatine" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Creatine
+        </button>
+        <button onclick="selectCategory('Pre-Workouts & Energy')" data-cat="Pre-Workouts & Energy" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Pre-Workouts
+        </button>
+        <button onclick="selectCategory('BCAA & Amino Acids')" data-cat="BCAA & Amino Acids" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          BCAA & Amino
+        </button>
+        <button onclick="selectCategory('Fat Burners & Weight Loss')" data-cat="Fat Burners & Weight Loss" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Fat Burners
+        </button>
+        <button onclick="selectCategory('Testosterone & Hormone Support')" data-cat="Testosterone & Hormone Support" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Test Support
+        </button>
+        <button onclick="selectCategory('Multivitamins & Wellness')" data-cat="Multivitamins & Wellness" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Vitamins
+        </button>
+        <button onclick="selectCategory('Carbohydrates & Energy')" data-cat="Carbohydrates & Energy" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Carbs & Energy
+        </button>
+        <button onclick="selectCategory('Gym Accessories & Shakers')" data-cat="Gym Accessories & Shakers" class="cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition">
+          Accessories
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- NOTICE BANNER & INSTRUCTIONS -->
-  <section class="bg-blue-50 border-b border-blue-100 py-3 no-print">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-blue-900">
-        <div class="flex items-start gap-2.5">
-          <i class="fa-solid fa-circle-info text-blue-600 mt-0.5 text-sm"></i>
-          <div>
-            <span class="font-bold">Instructions for SilverFox Team:</span>
-            Aap har product ke aagay apna <span class="font-bold text-blue-700 underline">Offered Wholesale Price (PKR)</span> aur <span class="font-bold text-blue-700 underline">MOQ</span> enter karein. Data browser mein automatically save hota rahay ga. Mukammal honay par "Export Excel" ya "Send to PakNutrition" par click kar dain.
-          </div>
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <span id="saveStatus" class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-full">
-            <i class="fa-solid fa-circle-check"></i> Auto-Saved
-          </span>
-          <button onclick="clearAllData()" class="text-[11px] text-slate-500 hover:text-red-600 underline">
-            Reset
-          </button>
-        </div>
+  <!-- SUB-HEADER: TABS & STATS BAR -->
+  <section class="bg-white border-b border-slate-200 px-3 py-2 sticky top-[105px] z-20 shadow-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 text-xs">
+      <!-- Status Tabs: All | Pending | Quoted -->
+      <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+        <button id="tabAll" onclick="setStatusFilter('all')" class="px-2.5 py-1 rounded-md bg-white text-slate-900 font-bold shadow-xs transition">
+          All (<span id="countAll">237</span>)
+        </button>
+        <button id="tabPending" onclick="setStatusFilter('pending')" class="px-2.5 py-1 rounded-md text-slate-600 font-semibold transition">
+          Pending (<span id="countPending">237</span>)
+        </button>
+        <button id="tabQuoted" onclick="setStatusFilter('quoted')" class="px-2.5 py-1 rounded-md text-slate-600 font-semibold transition">
+          Quoted (<span id="countQuoted">0</span>)
+        </button>
+      </div>
+
+      <!-- Jump to Next Unquoted & View Toggle -->
+      <div class="flex items-center gap-1.5">
+        <button onclick="jumpToNextPending()" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 font-bold text-[11px] transition">
+          <span>Next Unquoted</span>
+          <i class="fa-solid fa-arrow-down text-[10px]"></i>
+        </button>
+        <button onclick="toggleViewMode()" id="viewToggleBtn" title="Switch between Card and Table view" class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200 flex items-center justify-center text-xs transition">
+          <i class="fa-solid fa-table-list"></i>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
-
-    <!-- METRICS & PROGRESS DASHBOARD -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 no-print">
-      <!-- Total Products -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-        <div>
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Products</p>
-          <p class="text-2xl font-extrabold text-slate-900 mt-0.5">237</p>
-        </div>
-        <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-boxes-stacked"></i>
-        </div>
-      </div>
-
-      <!-- Quoted Items -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-        <div>
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Quoted by SilverFox</p>
-          <p class="text-2xl font-extrabold text-emerald-600 mt-0.5" id="metricQuotedCount">0</p>
-        </div>
-        <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-clipboard-check"></i>
-        </div>
-      </div>
-
-      <!-- Completion Rate -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-        <div>
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Completion</p>
-          <p class="text-2xl font-extrabold text-indigo-600 mt-0.5" id="metricProgressPct">0%</p>
-        </div>
-        <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-chart-pie"></i>
-        </div>
-      </div>
-
-      <!-- Average Wholesale Discount -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-        <div>
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Avg Wholesale Discount</p>
-          <p class="text-2xl font-extrabold text-amber-600 mt-0.5" id="metricAvgDiscount">0.0%</p>
-        </div>
-        <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-tag"></i>
-        </div>
+  <!-- QUICK INSTRUCTION BANNER (DISMISSIBLE) -->
+  <section id="mobileNoticeBanner" class="bg-blue-50 border-b border-blue-100 px-3.5 py-2.5 text-xs text-blue-900 flex items-start justify-between gap-2 no-print">
+    <div class="flex items-start gap-2">
+      <i class="fa-solid fa-mobile-screen-button text-blue-600 mt-0.5 text-sm"></i>
+      <div>
+        <span class="font-bold">Mobile First Portal:</span> 
+        Har product ke neechay apna <span class="font-bold text-blue-700">Wholesale Rate</span> type karein. Data browser mein auto-save hota rahe ga. End par WhatsApp ya Excel download karein.
       </div>
     </div>
+    <button onclick="document.getElementById('mobileNoticeBanner').remove()" class="text-slate-400 hover:text-slate-600 text-sm">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </section>
 
-    <!-- FILTER & SEARCH BAR -->
-    <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm space-y-3.5 no-print">
-      <div class="flex flex-col md:flex-row items-center gap-3">
-        <!-- Search Input -->
-        <div class="relative flex-1 w-full">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Search by product name, brand (e.g. Kevin Levrone, Applied Nutrition), or SKU..."
-            class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
-            oninput="applyFilters()"
-          >
-        </div>
+  <!-- MAIN PRODUCT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-4 flex-1 w-full">
 
-        <!-- Category Dropdown -->
-        <div class="w-full md:w-64">
-          <select 
-            id="categorySelect" 
-            class="w-full py-2.5 px-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
-            onchange="applyFilters()"
-          >
-            <option value="all">All Categories (All 237 Items)</option>
-            <option value="Whey & Protein Supplements">Whey & Protein</option>
-            <option value="Mass Gainers">Mass Gainers</option>
-            <option value="Creatine">Creatine</option>
-            <option value="Pre-Workouts & Energy">Pre-Workouts</option>
-            <option value="BCAA & Amino Acids">BCAA & Amino Acids</option>
-            <option value="Fat Burners & Weight Loss">Fat Burners</option>
-            <option value="Testosterone & Hormone Support">Hormone / Test Support</option>
-            <option value="Multivitamins & Wellness">Vitamins & Wellness</option>
-            <option value="Carbohydrates & Energy">Carbs & Energy</option>
-            <option value="Gym Accessories & Shakers">Accessories</option>
-          </select>
-        </div>
-
-        <!-- Status Filter Pills -->
-        <div class="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-semibold shrink-0">
-          <button id="btnFilterAll" onclick="setStatusFilter('all')" class="px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-sm transition">All</button>
-          <button id="btnFilterPending" onclick="setStatusFilter('pending')" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">Pending</button>
-          <button id="btnFilterQuoted" onclick="setStatusFilter('quoted')" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition">Quoted</button>
-        </div>
-      </div>
-      
-      <div class="flex items-center justify-between text-xs text-slate-500 px-1">
-        <span id="filteredCountText">Showing 237 products</span>
-        <button onclick="bulkFill10Percent()" class="text-blue-600 hover:underline text-xs font-medium">
-          💡 Need a starting point? (Auto-calculate test 20% discount)
-        </button>
-      </div>
+    <!-- CARD VIEW (DEFAULT ON MOBILE) -->
+    <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+      <!-- Rendered dynamically by JavaScript -->
     </div>
 
-    <!-- PRODUCTS TABLE -->
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto custom-scrollbar">
+    <!-- TABLE VIEW (ALTERNATIVE FOR DESKTOP/LARGE SCREENS) -->
+    <div id="tableViewContainer" class="hidden bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse" id="productsTable">
           <thead>
             <tr class="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider border-b border-slate-800">
-              <th class="py-3.5 px-3 text-center w-12">No.</th>
-              <th class="py-3.5 px-3 text-center w-16">Photo</th>
-              <th class="py-3.5 px-4 min-w-[260px]">Product Description & Brand</th>
-              <th class="py-3.5 px-3 text-right w-32">Retail Price</th>
-              <th class="py-3.5 px-4 bg-blue-700 text-white text-center min-w-[190px]">
-                <div class="flex items-center justify-center gap-1.5">
-                  <i class="fa-solid fa-hand-holding-dollar"></i>
-                  <span>Wholesale Price (PKR)</span>
-                </div>
-              </th>
-              <th class="py-3.5 px-3 text-center w-24">MOQ</th>
-              <th class="py-3.5 px-4 min-w-[160px]">Remarks / Expiry</th>
+              <th class="py-3 px-2 text-center w-10">#</th>
+              <th class="py-3 px-2 text-center w-14">Photo</th>
+              <th class="py-3 px-3 min-w-[200px]">Product & Brand</th>
+              <th class="py-3 px-2 text-right w-28">Website Retail</th>
+              <th class="py-3 px-3 bg-blue-700 text-white text-center min-w-[160px]">Wholesale Price</th>
+              <th class="py-3 px-2 text-center w-20">MOQ</th>
+              <th class="py-3 px-3 min-w-[130px]">Remarks</th>
             </tr>
           </thead>
-          <tbody id="productsTableBody" class="divide-y divide-slate-200 text-sm">
-            <!-- Dynamically Rendered by JS -->
+          <tbody id="tableBody" class="divide-y divide-slate-200 text-sm">
+            <!-- Rendered by JS -->
           </tbody>
         </table>
       </div>
-
-      <!-- Empty State -->
-      <div id="noResultsState" class="hidden py-16 text-center text-slate-400">
-        <i class="fa-solid fa-magnifying-glass text-4xl mb-3 text-slate-300"></i>
-        <p class="text-base font-semibold text-slate-600">No matching products found</p>
-        <p class="text-xs text-slate-400 mt-1">Try adjusting your search query or category filter.</p>
-      </div>
     </div>
 
-    <!-- STICKY BOTTOM SUBMISSION BAR -->
-    <div class="sticky bottom-4 z-30 bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-4 no-print">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg font-bold">
-          <i class="fa-solid fa-check-double"></i>
-        </div>
-        <div>
-          <div class="text-sm font-bold flex items-center gap-2">
-            <span>Quotation Progress:</span>
-            <span id="bottomProgressBadge" class="text-emerald-400 font-extrabold">0 / 237 Quoted (0%)</span>
-          </div>
-          <p class="text-xs text-slate-400">All data is kept saved locally in this browser.</p>
-        </div>
+    <!-- EMPTY / NO RESULTS STATE -->
+    <div id="noResultsState" class="hidden py-14 text-center text-slate-400">
+      <div class="w-14 h-14 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center mx-auto text-xl mb-3">
+        <i class="fa-solid fa-magnifying-glass"></i>
       </div>
-
-      <div class="flex items-center gap-3 w-full sm:w-auto">
-        <button onclick="exportToExcel()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-sm shadow-lg shadow-emerald-600/30 transition">
-          <i class="fa-solid fa-file-excel"></i>
-          <span>Download Excel Quotation</span>
-        </button>
-        <button onclick="shareViaWhatsApp()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-500 font-bold text-sm shadow-lg shadow-green-600/30 transition">
-          <i class="fa-brands fa-whatsapp text-base"></i>
-          <span>Submit via WhatsApp</span>
-        </button>
-      </div>
+      <p class="text-base font-bold text-slate-700">No matching products</p>
+      <p class="text-xs text-slate-400 mt-1">Try changing category or clearing your search query.</p>
+      <button onclick="resetFilters()" class="mt-3 px-4 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold">
+        Show All Products
+      </button>
     </div>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 mt-auto">
-    <div class="max-w-7xl mx-auto px-4">
-      <p class="font-medium text-slate-500">PakNutrition — Commercial Procurement Division • Confidential Trade Inquiry</p>
-      <p class="mt-1">Inquiry for SilverFox Supplement (Pvt) Ltd • Long-term Wholesale Contract RFQ</p>
+  <!-- STICKY MOBILE BOTTOM BAR (ONE-THUMB SUBMIT & PROGRESS) -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-3 py-2.5 pb-safe shadow-2xl no-print">
+    <div class="max-w-7xl mx-auto flex flex-col gap-2">
+      <!-- Progress Bar Strip -->
+      <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+        <div id="bottomProgressBar" class="bg-emerald-500 h-full transition-all duration-300 rounded-full" style="width: 0%"></div>
+      </div>
+
+      <!-- Action Row -->
+      <div class="flex items-center justify-between gap-2.5">
+        <!-- Progress Text -->
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 text-xs text-white">
+            <span class="font-bold text-emerald-400" id="bottomProgressCount">0 / 237</span>
+            <span class="text-slate-400 text-[11px]">(<span id="bottomProgressPct">0%</span>)</span>
+          </div>
+          <div class="text-[10px] text-slate-400 truncate">
+            Avg Wholesale Disc: <span class="font-bold text-amber-300" id="bottomAvgDiscount">0%</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2 shrink-0">
+          <button onclick="exportToExcel()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition active:scale-95">
+            <i class="fa-solid fa-file-excel text-emerald-400 text-sm"></i>
+            <span>Excel</span>
+          </button>
+          
+          <button onclick="shareViaWhatsApp()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-500 text-white text-xs font-extrabold shadow-lg shadow-green-600/30 transition active:scale-95">
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span>Send Quote</span>
+          </button>
+        </div>
+      </div>
     </div>
-  </footer>
+  </div>
+
+  <!-- IMAGE LIGHTBOX MODAL -->
+  <div id="imageLightbox" onclick="closeLightbox()" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl p-4 max-w-sm w-full mx-auto relative shadow-2xl" onclick="event.stopPropagation()">
+      <button onclick="closeLightbox()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+      <div class="w-full h-64 bg-slate-50 rounded-xl flex items-center justify-center p-4 border border-slate-100">
+        <img id="lightboxImg" src="" alt="Product Large View" class="max-w-full max-h-full object-contain">
+      </div>
+      <div class="mt-3 text-center">
+        <div id="lightboxTitle" class="font-bold text-slate-900 text-sm leading-snug"></div>
+        <div id="lightboxPrice" class="text-xs font-extrabold text-blue-600 mt-1"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
     const RAW_ITEMS = [{"id": 8080918052909, "title": "Animal 100% Whey Protein Powder 4lbs", "brand": "Animal", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 19500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Animal-100-Whey-Protein-4lb-at-Silver-Fox-Supplement.jpg?v=1784030779", "sku": "ANIMAL-WHEY-SFS", "variants_summary": "Vanilla Flavor", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/animal-100-whey-protein-4lb", "item_no": 1}, {"id": 8098576433197, "title": "AN Critical Whey Protein Blend 2kg", "brand": "Applied Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 18000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ANCriticalWhey2kg.png?v=1784030649", "sku": "AN-Critical-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/an-critical-whey-protein-2kg", "item_no": 2}, {"id": 8099299262509, "title": "AN ISO-XP 1kg Whey Protein Isolate - 40 Servings", "brand": "Applied Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ANIso-XP1kgchococaramel2.png?v=1784030645", "sku": "AN-ISO-SFS", "variants_summary": "Choco Caramel", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/an-iso-xp-1kg-40-servings", "item_no": 3}, {"id": 8344526618669, "title": "BPI Sports ISO HD | 100% Pure Isolate Protein", "brand": "BPI Sports", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 24000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/EoSez1puJVmjz5eUFBXVgWCNhdRPYUmGaFRxfI3Q.jpg?v=1784030313", "sku": "SF-8344526618669", "variants_summary": "Chocolate Brownie, Vanilla Cookie", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bpi-sports-iso-hd-100-pure-isolate-protein", "item_no": 4}, {"id": 8080917921837, "title": "Whey HD Ultra Premium Whey Protein Powder 4lbs", "brand": "BPI Sports", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/WHEY-HD-50SERVS-CHOCOLATECOOKIE_TS.png?v=1784030792", "sku": "WHEY-HD-SFS", "variants_summary": "Chocolate Cookie", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bpi-sport-whey-hd-4lbs", "item_no": 5}, {"id": 8080917626925, "title": "Challenger Nutrition 100% Whey Protein 4lbs", "brand": "Challenger Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 20000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Challenger-100-Whey-Protein-4lbs-at-Silver-Fox-Supplement.jpg?v=1784030812", "sku": "CHALLENGER-WHEY-SFS", "variants_summary": "Chocolate Milk", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/challenger-nutrition-100-whey-protein-4lbs", "item_no": 6}, {"id": 15170201714733, "title": "Core Champs 100% Whey Protein 5LBs", "brand": "Core Champs", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 24000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/corechampswheyprotein.jpg?v=1784028777", "sku": "CORECHAMPS-WHEY-SFS-1", "variants_summary": "Rich Chocolate, Pina Colado, Strawberry", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/core-champs-100-whey-protein-5lbs", "item_no": 7}, {"id": 15170206236717, "title": "Core Champs Isolate Whey 4.41LBS", "brand": "Core Champs", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/corechamp_isolate_protein_4lb.png?v=1784283585", "sku": "CORECHAMPS-ISO-SFS-1", "variants_summary": "Vimto Burst, Pineapple Chill, Lemonade Rush", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/core-champs-isolate-whey-4-41lbs", "item_no": 8}, {"id": 8080917069869, "title": "Dymatize ISO100 5lbs | Pure Hydrolysed Whey Isolate", "brand": "Dymatize", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 37000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/dymatize-iso100-fruity-pebbles-at-silver-fox-supplement.jpg?v=1784030837", "sku": "ISO-100-SFS", "variants_summary": "Gourmet Chocolate / 5L, Gourmet Chocolate / 2LB, Fruity Pebbles / 5L...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/dymatize-iso100-5lbs-pure-hydrolysed-whey-isolate", "item_no": 9}, {"id": 8087917035565, "title": "FA Gold Iso Whey Protein 2kg | Fitness Authority", "brand": "FA", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/fagoldisooldpacking2kg.png?v=1784030679", "sku": "GOLD-ISO-2KG", "variants_summary": "Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/fa-gold-iso-whey-protein-2kg", "item_no": 10}, {"id": 8121747046445, "title": "FA ISO Core 2kg by Fitness Authority", "brand": "FA", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 21000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/FA_ISO_Core_2kg.jpg?v=1784030619", "sku": "SF-8121747046445", "variants_summary": "Chocolate, Vanilla, Strawberry...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/fa-iso-core-2kg", "item_no": 11}, {"id": 8080916938797, "title": "Galvanize Chrome 100 Isolate 2kg", "brand": "Galvanize Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Galvanized-Chrome-100-Isolate-2kg-at-silver-fox-supplement.jpg?v=1784030860", "sku": "GALVANIZE-ISO-SFS", "variants_summary": "Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/galvanize-chrome-100-isolate-2kg", "item_no": 12}, {"id": 8080916873261, "title": "Insane Whey Ripped 4.5lbs by Insane Labz", "brand": "Insane Labz", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Insane-labz-insane-whey-ripped-45lbs-at-silver-fox-supplement.jpg?v=1784030862", "sku": "INSANE-RIPPED-SFS", "variants_summary": "Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/insane-labz-insane-whey-ripped-4-5lbs", "item_no": 13}, {"id": 8080916709421, "title": "Anabolic Double Impact 2kg 66 Servings by Kevin Levrone", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 20500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin-Levrone-Anabolic-Double-Impact-2kg-at-Silver-Fox-Supplement-1.jpg?v=1784030874", "sku": "DOUBLE-IMPACT-SFS", "variants_summary": "Strawberry", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-anabolic-double-impact-2kg", "item_no": 14}, {"id": 8080916643885, "title": "Anabolic ISO Whey 2kg 66 Servings by Kevin Levrone", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 29000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin-Levrone-Anabolic-ISO-Whey-2kg-at-Silver-Fox-Supplement.jpg?v=1784030876", "sku": "ANABOLIC-ISO-SFS", "variants_summary": "Strawberry, Cookies with Cream, Vanilla...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-anabolic-iso-whey", "item_no": 15}, {"id": 8287787941933, "title": "Anabolic ISO Whey 4kg by Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 38500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/anabolic-iso-whey-4-kg.jpg?v=1759993201", "sku": "5903719240963", "variants_summary": "Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/anabolic-iso-whey-4kg-by-kevin-levrone-ss", "item_no": 16}, {"id": 8080916545581, "title": "Anabolic Prime-Pro 4kg 133 Servings by Kevin Levrone", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 35500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin-Levrone-Anabolic-Prime-Pro-4kg-at-Silver-Fox-Supplement.jpg?v=1784030887", "sku": "PRIME-PRO-SFS", "variants_summary": "Bunty, Snikers", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-anabolic-prime-pro-4-kg-133-servings", "item_no": 17}, {"id": 8080916512813, "title": "Gold ISO 2kg 66 Servings | Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 29500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin-Levrone-Gold-ISO-2kg-at-Silver-Fox-Supplement.jpg?v=1784030889", "sku": "GOLD-ISO-SFS", "variants_summary": "Chocolate, Pistachio, Vanilla...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-gold-iso-2kg", "item_no": 18}, {"id": 8080916414509, "title": "Gold Whey 2kg 66s | Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 24500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin-Levrone-Gold-Whey-2kg-at-Silver-Fox-Supplement.jpg?v=1784030897", "sku": "GOLD-WHEY-SFS", "variants_summary": "Vanilla, Chocolate, Strawberry...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-gold-whey-2kg", "item_no": 19}, {"id": 8080916348973, "title": "Levro ISO Whey 2kg | Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/KL-Levro-ISO-Whey-2kg-at-Silver-Fox-Supplement.jpg?v=1784030902", "sku": "LEVRO-ISO-SFS", "variants_summary": "Strawberry, Snikers", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-levro-iso-whey-2kg", "item_no": 20}, {"id": 8080916283437, "title": "Prime Pro 2kg 66s by Kevin Levrone Signature Series", "brand": "Kevin Levrone", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/KL-Prime-Pro-2kg-at-Silver-Fox-Supplement.jpg?v=1784030906", "sku": "PRIME-PRO2KG-SFS", "variants_summary": "Chocolate, Cookies With Cream, Strawberry...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-prime-pro-2kg", "item_no": 21}, {"id": 8087913234477, "title": "Muscle Core Nutrition ISO-Whey", "brand": "Muscle Core", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/musclecoreisowheychocolate.png?v=1784030683", "sku": "MC-ISO-WHEY", "variants_summary": "Chocolate, Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/muscle-core-nutrition-iso-whey", "item_no": 22}, {"id": "8327268204589_16000.0", "title": "Hydrolyzed Beef Protein Isolate | MuscleMeds", "brand": "MuscleMeds", "category": "Whey & Protein Supplements", "tier": "2LBs", "retail_price": 16000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Carnivor-Renders-2lb-Chocolate_1800x_be4ed0e4-a6ed-40b4-9717-59c36e118dfd.png?v=1784030382", "sku": "N/A", "variants_summary": "2LBs / Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/hydrolyzed-beef-protein-isolate-musclemeds", "item_no": 23}, {"id": "8327268204589_26000.0", "title": "Hydrolyzed Beef Protein Isolate | MuscleMeds", "brand": "MuscleMeds", "category": "Whey & Protein Supplements", "tier": "5LBs", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Carnivor-Renders-4lb-Chocolate.png?v=1784030387", "sku": "N/A", "variants_summary": "5LBs / Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/hydrolyzed-beef-protein-isolate-musclemeds", "item_no": 24}, {"id": "8158835376173_15000.0", "title": "MuscleMeds Carnivor Shred | Hydrolyzed Protein", "brand": "MuscleMeds", "category": "Whey & Protein Supplements", "tier": "2.18LB", "retail_price": 15000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/8.jpg?v=1784030565", "sku": "N/A", "variants_summary": "2.18LB / Chocolate, 2.18LB / Vanilla Caramel", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/musclemeds-carnivor-shred", "item_no": 25}, {"id": "8158835376173_26000.0", "title": "MuscleMeds Carnivor Shred | Hydrolyzed Protein", "brand": "MuscleMeds", "category": "Whey & Protein Supplements", "tier": "4.25LB", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Carnivor_Shred_by_MuslceMeds.png?v=1784030561", "sku": "N/A", "variants_summary": "4.25LB / Chocolate, 4.25LB / Vanilla Caramel", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/musclemeds-carnivor-shred", "item_no": 26}, {"id": 15370307076141, "title": "Muscletech Nitrotech Whey Protein 10LB", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 39500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MuscleTech-Nitro-Tech-Protein-Powder-Vanilla-10-Lb_adf60dee-c620-40a5-9a6f-d2b1f7a54e4f.4f0d20df7c92d37570faefee582aa1aa.jpg?v=1788874586", "sku": "MT-NTWHEYPROTEIN10-LB", "variants_summary": "Vanilla", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-nitrotech-whey-protein-10lb", "item_no": 27}, {"id": 8080915955757, "title": "Nitrotech 100% Whey Gold 5lbs by MuscleTech", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 29000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Muscletech-Nitrotech-100-Whey-Gold-5lbs.jpg?v=1784030936", "sku": "MT-WHEYGOLD-SFS", "variants_summary": "Double Rich Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-nitrotech-100-whey-gold-5lbs", "item_no": 28}, {"id": 8080915922989, "title": "Nitrotech 100% Whey Gold 8lbs by Muscletech", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 36500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/download-3.webp?v=1784030937", "sku": "NITROTECH-GOLD8LB-SFS", "variants_summary": "Double Rich Chocolate / 8 lbs, Vanilla / 8 lbs", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/nitrotech-whey-gold-8lbs-by-muscletech", "item_no": 29}, {"id": 8080914612269, "title": "Nitrotech Ripped 2lbs by Muscletech", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 13000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/NitrotechRipped2lbs_1024x1024_2x_420fdcf8-9eca-4b48-9bc4-7cab34538f06.jpg?v=1784031082", "sku": "NITROTECH-RIPPED-SFS", "variants_summary": "Chocolate Fudge Brownie", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-nitrotech-ripped-2lbs", "item_no": 30}, {"id": 8080914645037, "title": "Nitrotech Ripped 4lbs by Muscletech", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 28000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/NitroTech-Ripped-4lb-van.jpg?v=1784031074", "sku": "NT-RIPPED4LB-SFS", "variants_summary": "Vanilla Cream / 44 Servings, French Vanilla Bean / 44 Servings, Milk Chocolate / 44 Servings", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-nitrotech-ripped-4lbs", "item_no": 31}, {"id": 8080915005485, "title": "Nitrotech Whey Protein 2lbs by MuscleTech", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 11500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MuscltechNitrotechwheyprotein2lbsatsilverfoxsupplement.jpg?v=1784031050", "sku": "NITROTECH-WHEY2LB-SFS", "variants_summary": "2lb / Milk Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/muscle-tech-nitrotech-whey-protein-2lbs", "item_no": 32}, {"id": 8080916119597, "title": "Nitrotech Whey Protein 4lbs by MuscleTech", "brand": "MuscleTech", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 26500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Nitrotech_whey_protein_4lbs-vanilla.png?v=1784030916", "sku": "NT-WHEYPROTEIN-SFS", "variants_summary": "4lb / Milk Chocolate, 4lb / Vanilla Cream, 4lb / Strawberry", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscle-tech-nitrotech-whey-protein", "item_no": 33}, {"id": 8391838826541, "title": "Impact Whey Protein Powder 1kg", "brand": "MyProtein", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 12500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/13758396-1305155914477312.webp?v=1784029240", "sku": "MYPROTEIN-IMPACT-SFS", "variants_summary": "Chocolate Smooth", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/impact-whey-protein-powder-1kg", "item_no": 34}, {"id": 8390814335021, "title": "ISOFIT Whey Protein Isolate Powder by Nutrex Research", "brand": "Nutrex Research", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 14500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/IsoFit-30-CS_708f2b61-ea95-4d1d-bac8-120e592bcbf5.png?v=1784029436", "sku": "NUTREX-ISO-SFS", "variants_summary": "Chocolate Shake", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/isofit-whey-protein-isolate-powder-by-nutrex-research", "item_no": 35}, {"id": 8259015508013, "title": "Nutrex Research 100% Whey Protein 2LBs", "brand": "Nutrex Research", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/100Whey-2lb-Van-FR.png?v=1759993219", "sku": "NR-WHEY-SFS", "variants_summary": "Vanilla, Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/100-whey-protein-2lbs-nutrex-research", "item_no": 36}, {"id": 8211768246317, "title": "Gold Standard 100% Whey 5.64LBs by Optimum Nutrition | 80 Servings", "brand": "Optimum Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 33500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/1243864-847__1.webp?v=1784030497", "sku": "SF-8211768246317", "variants_summary": "Extreme Milk Chocolate, Vanilla Ice Cream", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/optimum-nutrition-gold-standard-100-whey-5-64lbs-80-servings", "item_no": 37}, {"id": 8080915333165, "title": "Gold Standard 100% Whey 5lbs by Optimum Nutrition", "brand": "Optimum Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 42000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/gold_standard_new_packing_5lb.png?v=1784030992", "sku": "GOLD-STANDARD-SFS", "variants_summary": "French Vanilla Cream, Cookies & Cream, Double Rich Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/optimum-nutrition-gold-standard-100-whey-5lb-74-servings", "item_no": 38}, {"id": 8342508896301, "title": "PROSCIENCE 100% Whey Protein 5LB", "brand": "PROSCIENCE", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 23000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/PROSCIENCECHOCOLATE.jpg?v=1784030375", "sku": "SF-8342508896301", "variants_summary": "Gourmet Chocolate, Chocolate Peanut Butter, Mango Smoothie", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/proscience-100-whey-protein-5lb", "item_no": 39}, {"id": 8080913465389, "title": "Whey Matrix-Premium Whey Protein 5lbs by ProSupps", "brand": "ProSupps", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 16500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/wheymatrixpouch.png?v=1784031257", "sku": "PROSUPPS-MATRIX-SFS", "variants_summary": "Vanilla Swirl Ice Cream, Chocolate Fudge Ice Cream", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/prosupps-whey-matrix-premium-whey-protein-5lbs", "item_no": 40}, {"id": 8259018293293, "title": "ISO-Tropic Max 30 Servings | RC", "brand": "RC Signature Series", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 15000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/RC_ISO-Tropic_2lb_in_Pakistan.jpg?v=1784030400", "sku": "RC-ISO-SFS", "variants_summary": "Caramel, Colada", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/iso-tropic-max-30-servings-rc", "item_no": 41}, {"id": 8084319535149, "title": "RC King Whey Protein Blend 4lbs", "brand": "RC Signature Series", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 16500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kingwhey4lbs.png?v=1784030741", "sku": "RC-WHEY-SFS", "variants_summary": "Chocolate, Vavilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rc-king-whey-4lbs", "item_no": 42}, {"id": "8080914710573_14500.0", "title": "Rule1 Whey Blend 5lbs | 100% Whey Protein", "brand": "Rule One", "category": "Whey & Protein Supplements", "tier": "2LB", "retail_price": 14500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Rule1_protein_blend_2lb.jpg?v=1784031070", "sku": "RULE1-BLEND-SFS", "variants_summary": "2LB / Chocolate Fudge, 2LB / Cafe Mocha, 2LB / Frozen Banana", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rule1-whey-blend-5lbs", "item_no": 43}, {"id": "8080914710573_24500.0", "title": "Rule1 Whey Blend 5lbs | 100% Whey Protein", "brand": "Rule One", "category": "Whey & Protein Supplements", "tier": "5LB", "retail_price": 24500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Rule1_protein_blend_2lb.jpg?v=1784031070", "sku": "RULE1-BLEND-SFS", "variants_summary": "5LB / Chocolate Fudge, 5LB / Cafe Mocha, 5LB / Frozen Banana", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rule1-whey-blend-5lbs", "item_no": 44}, {"id": 8093117218861, "title": "Prostar 100% Whey Protein 5.28lbs BY Ultimate Nutrition", "brand": "Ultimate Nutrition", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 23000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/prostar_whey_cocoa_mocha_5lbs.png?v=1784030657", "sku": "PROSTAR-WHEY-SFS", "variants_summary": "Cardamom, Peanut Butter & Jelly, Mango...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/un-prostar-100-whey-protein-5-28lbs", "item_no": 45}, {"id": 8093115580461, "title": "VM Premium Isolate Protein Matrix 4.4lb", "brand": "Victor Martinez", "category": "Whey & Protein Supplements", "tier": "", "retail_price": 22500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/VMSS_Premuim_ISO_Whey_4lbs_at_Silver_Fox_Supplement.jpg?v=1784030669", "sku": "VM-ISO-SFS", "variants_summary": "Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/vm-premium-isolate-protein-matrix-4-4lb", "item_no": 46}, {"id": 8167406305325, "title": "Critical Mass 6kg | Applied Nutrition", "brand": "Applied Nutrition", "category": "Mass Gainers", "tier": "", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Critical_Mass_6kg_new_banana.png?v=1784030512", "sku": "SF-8167406305325", "variants_summary": "Banana, Strawberry, Cookies N Cream", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/critical-mass-6kg-applied-nutrition", "item_no": 47}, {"id": 8080917757997, "title": "BSN True Mass 10lb bag: Weight Gainer", "brand": "BSN", "category": "Mass Gainers", "tier": "", "retail_price": 22500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bsntruemass.jpg?v=1784030801", "sku": "BSN-MASS_SFS", "variants_summary": "10lb / Chocolate Milkshake", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bsn-true-mass-10lbs", "item_no": 48}, {"id": 8397123059757, "title": "Thaiger Wild Mass Gainer 10LBs", "brand": "By SFS", "category": "Mass Gainers", "tier": "", "retail_price": 19500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/thigerwildmass.jpg?v=1784029234", "sku": "THAIGER-WILD-10LB-1", "variants_summary": "Chocolate, Vanilla, Mango...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/thaiger-wild-mass-gainer-10lbs", "item_no": 49}, {"id": 8080917168173, "title": "Thunder Gain 5lb | Challenger Nutrition", "brand": "Challenger Nutrition", "category": "Mass Gainers", "tier": "", "retail_price": 12000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Thunder-Gain-5lb_1024x1024_6400e-1.jpg?v=1784030828", "sku": "THUNDER-GAIN-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/thunder-gain-5lb-challenger-nutrition", "item_no": 50}, {"id": 15129612484653, "title": "Core Champ Mass Gainer 6LB - High Calorie Gainer", "brand": "Core Champs", "category": "Mass Gainers", "tier": "", "retail_price": 17000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Mass_6LBS_Chocolate_1_870x1131_aabb9acf-0d93-4a00-b34d-c96d9e2539de.png?v=1784028817", "sku": "SF-15129612484653", "variants_summary": "Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/core-champ-mass-gainer-6lb-high-calorie-gainer", "item_no": 51}, {"id": 8080917102637, "title": "Blade Mass 7kg | Dexter Jackson", "brand": "Dexter Jackson", "category": "Mass Gainers", "tier": "", "retail_price": 19500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/The-Blade-Mass-7kg-at-Silver-Fox-Supplement.jpg?v=1784030832", "sku": "BLADE-MASS-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/blade-mass-7kg", "item_no": 52}, {"id": 8110939471917, "title": "Dymatize Super Mass Gainer 12lbs", "brand": "Dymatize", "category": "Mass Gainers", "tier": "", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/DymatizeSuperMassGainer12lbbag.png?v=1784030624", "sku": "SF-8110939471917", "variants_summary": "Rich Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/dymatize-super-mass-gainer-12lbs", "item_no": 53}, {"id": 8080916611117, "title": "Anabolic Mass 3kg by Kevin Levrone Signature Series", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "", "retail_price": 17000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/anabolic-mass-3-kg.webp?v=1784030881", "sku": "ANABOLIC-3KG-SFS", "variants_summary": "Chocolate, Bunty, Strawberry...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/anabolic-mass-3kg", "item_no": 54}, {"id": "8080916578349_28000.0", "title": "Anabolic Mass 7kg Kevin Levrone", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "Chocolate / Cookies & Cream / Vanilla", "retail_price": 28000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/anabolic-mass-7kg-at-silver-fox-supplement.jpg?v=1784030883", "sku": "ANABOLIC-7KG-SFS", "variants_summary": "Chocolate, Cookies & Cream, Vanilla", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-anabolic-mass-7-kg", "item_no": 55}, {"id": "8080916578349_29000.0", "title": "Anabolic Mass 7kg Kevin Levrone", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "Bunty / Snickers", "retail_price": 29000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/anabolic-mass-7kg-at-silver-fox-supplement.jpg?v=1784030883", "sku": "ANABOLIC-7KG-SFS", "variants_summary": "Bunty, Snickers", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-anabolic-mass-7-kg", "item_no": 56}, {"id": 8080914907181, "title": "Gold Lean Mass 3kg by Kevin Levrone", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "", "retail_price": 16000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/KLgoldleanmass3kg.jpg?v=1784031059", "sku": "GOLD-LEAN3KG-SFS", "variants_summary": "Chocolate, Mango, Snikers...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-gold-lean-mass-3kg", "item_no": 57}, {"id": 8080916480045, "title": "Gold Lean Mass 6kg by Kevin Levrone", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/gold-lean-mass-6kg-at-silver-fox-suppplement.jpg?v=1784030893", "sku": "GOLD-LEAN6KG-SFS", "variants_summary": "Chocolate Nuts, Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-gold-lean-mass-6kg", "item_no": 58}, {"id": 8080916447277, "title": "Gold Super Mass 7kg Bag | Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "", "retail_price": 25000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/gold-super-mass-7kg-at-silver-fox-suppplement.jpg?v=1784030895", "sku": "SUPER-7KG-SFS", "variants_summary": "Chocolate, Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-gold-super-mass-7kg", "item_no": 59}, {"id": 8105667002413, "title": "KL Gold Lean Mass 6kg | Silver Fox", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "", "retail_price": 28000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/xyIdigZd5GKDT68QydMtRySfcoJypFFRY9pVPtzQ.jpg?v=1756301605", "sku": "GoldLean-6kg-SFS", "variants_summary": "Chocolate, Cookies & Cream", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kl-gold-lean-mass-6kg", "item_no": 60}, {"id": "8080916774957_16500.0", "title": "Levro Legendary Mass 3kg by Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "Cookies & Cream / Snikers", "retail_price": 16500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/levrone-levro-legendary-mass-3-kg.jpg?v=1784030872", "sku": "N/A", "variants_summary": "Cookies & Cream, Snikers", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-levro-legendary-mass-3kg", "item_no": 61}, {"id": "8080916774957_17000.0", "title": "Levro Legendary Mass 3kg by Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "Chocolate / Bunty", "retail_price": 17000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/levrone-levro-legendary-mass-3-kg.jpg?v=1784030872", "sku": "LEVRO-LEGENDARY-SFS", "variants_summary": "Chocolate, Bunty", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-levro-legendary-mass-3kg", "item_no": 62}, {"id": 8160054313005, "title": "Levro Legendary Mass 6.8KG | Kevin Levrone", "brand": "Kevin Levrone", "category": "Mass Gainers", "tier": "", "retail_price": 26000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/FESUPLM01-1-600x600.jpg?v=1784030555", "sku": "SF-8160054313005", "variants_summary": "Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/levro-legendary-mass-6-8kg-kevin-levrone", "item_no": 63}, {"id": 8227017293869, "title": "Carnivor Mass 7kg Bag | MuscleMeds", "brand": "MuscleMeds", "category": "Mass Gainers", "tier": "", "retail_price": 32000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/musclemed_carnivor_mass_7kg.png?v=1784030453", "sku": "SF-8227017293869", "variants_summary": "Chocolate Fudge", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/carnivor-mass-7kg-bag-musclemeds", "item_no": 64}, {"id": 8080915988525, "title": "Mass Tech Extreme 2000 12lbs by Muscletech", "brand": "MuscleTech", "category": "Mass Gainers", "tier": "", "retail_price": 25500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Muscletech-Mass-Tech-Extreme-2000-12lb-at-Silver-Fox-Supplement.jpg?v=1784030934", "sku": "MASSTECH-EXTREME12LB-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-mass-tech-extreme-2000-12lb", "item_no": 65}, {"id": 8080916021293, "title": "Mass Tech Extreme 2000 by MuscleTech", "brand": "MuscleTech", "category": "Mass Gainers", "tier": "", "retail_price": 15500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MuscleTech-Mass-Tech-Extreme-Tri.jpg?v=1784030932", "sku": "MASS-TECH-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/mass-tech-extreme-weight-gainer", "item_no": 66}, {"id": 8105664184365, "title": "Muscletech Mass Tech Extreme 6lb", "brand": "MuscleTech", "category": "Mass Gainers", "tier": "", "retail_price": 16000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/masstechextreme20006lbpouch.jpg?v=1784030640", "sku": "Muscletech-2000-SFS", "variants_summary": "Triple Chocolate Brownie, Vanilla Ice Cream", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-mass-tech-extreme-6lb", "item_no": 67}, {"id": 15129731760173, "title": "Mutant Mass Extreme 2500 by Mutant", "brand": "Mutant", "category": "Mass Gainers", "tier": "", "retail_price": 24500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/compressed-1750417552752-mutant-mass-extreme-5450g-chocolate_1920x_53b8eede-aa69-4cad-8ef9-3a1c38fc30c4.jpg?v=1784028796", "sku": "MUTANT-MASSBAG-SFS", "variants_summary": "Triple Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/mutant-mass-extreme-2500-by-mutant", "item_no": 68}, {"id": 8219496022061, "title": "MUTANT MASS® 6 LBS DUAL CHAMBER - Muscle Mass Gainer 6lbs", "brand": "Mutant", "category": "Mass Gainers", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Mutant_mass_gainer_3kg.png?v=1784030486", "sku": "SF-8219496022061", "variants_summary": "Triple Chocolate and Chocolate Fudge Brownie", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/mutant-mass®-6-lbs-dual-chamber-muscle-mass-gainer-6lbs", "item_no": 69}, {"id": 8080915365933, "title": "Mass Infusion 12lbs by Nutrex Research", "brand": "Nutrex Research", "category": "Mass Gainers", "tier": "", "retail_price": 19500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MassInfusion-Choc-F.png?v=1784030987", "sku": "MASS-INFUSION12LB-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-research-mass-infusion-12lbs", "item_no": 70}, {"id": 8104991522861, "title": "Mass Infusion 6lb by Nutrext Research", "brand": "Nutrex Research", "category": "Mass Gainers", "tier": "", "retail_price": 12000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/NRMassInfusion6lb_66962611-d475-4bed-92d9-0f2f3cbfdde7.png?v=1784030642", "sku": "MASS-INFUSION-SFS", "variants_summary": "Chocolate, Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/mass-infusion-6lb", "item_no": 71}, {"id": 8080914939949, "title": "ON Gold Standard 100% Pro Gainer 10lbs", "brand": "Optimum Nutrition", "category": "Mass Gainers", "tier": "", "retail_price": 22300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/on_pro_gainer_10lbs.jpg?v=1784031057", "sku": "ON-PROGAINER-SFS", "variants_summary": "Double Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/on-gold-standard-100-pro-gainer-10lbs", "item_no": 72}, {"id": 8080915267629, "title": "Serious Mass 12lbs by Optimum Nutrition", "brand": "Optimum Nutrition", "category": "Mass Gainers", "tier": "", "retail_price": 29000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ONSeriousMass12lbsVanilla.png?v=1784030999", "sku": "SERIOUS-MASS12LB-SFS", "variants_summary": "Vanilla, Strawberry, Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/optimum-nutrition-serious-mass-12-lbs", "item_no": 73}, {"id": 8080915234861, "title": "Serious Mass 6lb by Optimum Nutrition", "brand": "Optimum Nutrition", "category": "Mass Gainers", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ONSeriousMass6lbsChocolate_900x_974730d6-6ffe-4d42-b4f2-de15ef118273.jpg?v=1784031007", "sku": "SERIOUS-MASS6LB-SFS", "variants_summary": "Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/on-serious-mass-6lb", "item_no": 74}, {"id": 15129619071021, "title": "Proscience Mass - REVOLUTIONARY WEIGHT GAINER", "brand": "PROSCIENCE", "category": "Mass Gainers", "tier": "", "retail_price": 16500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Pro-Science-Mass-Gainer-6LBS-Chocolate-ws-800x1000_025f6d67-4a81-4370-87ed-090e7ae837a8.png?v=1784028809", "sku": "PROSCIENCE-MASS-SFS-1", "variants_summary": "Chocolate, Chocolate Peanut Butter", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/proscience-mass-revolutionary-weight-gainer", "item_no": 75}, {"id": 8265015132205, "title": "Big Mass 3000g by Pure Gold Protein", "brand": "Pure Gold Protein", "category": "Mass Gainers", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/pgp-big-mass-3000g.png?v=1759993208", "sku": "PUREGOLD-MASS-SFS", "variants_summary": "Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/big-mass-3000g-by-pure-gold-protein", "item_no": 76}, {"id": 8469124349997, "title": "RC King Mass 15LBS (7KG) Weight Gainer Bucket", "brand": "RC Signature Series", "category": "Mass Gainers", "tier": "", "retail_price": 26500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/RC_king_mass_15lbs_bucket.png?v=1784029207", "sku": "SF-8469124349997", "variants_summary": "Vanilla Ice Cream", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/rc-king-mass-15-lbs-weight-gainer", "item_no": 77}, {"id": 8084320485421, "title": "RC King Mass XXL 6lbs Weight Gainer", "brand": "RC Signature Series", "category": "Mass Gainers", "tier": "", "retail_price": 13500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kingmassxxl6lb.png?v=1784030736", "sku": "KING-MASS-SFS", "variants_summary": "Chocolate, Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rc-king-mass-xxl-6lbs", "item_no": 78}, {"id": 8080915136557, "title": "Ronnie Coleman King Mass 6LBs (3KG)", "brand": "RC Signature Series", "category": "Mass Gainers", "tier": "", "retail_price": 13500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/RCKingMass6LBSDarkChocolate_1024x1024_2x_ce05768a-3f90-461e-b24c-ac65046434c1.jpg?v=1784031017", "sku": "KING-MASS5LB-SFS", "variants_summary": "Dark Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/ronnie-coleman-king-mass-6-lbs", "item_no": 79}, {"id": 8080914874413, "title": "Ronnie Coleman King Mass XL Gainer 10lbs", "brand": "RC Signature Series", "category": "Mass Gainers", "tier": "", "retail_price": 16000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/RCKingMass10lbStrawberryatSilverFoxSupplement.jpg?v=1784031061", "sku": "KING-MASS10LB-SFS", "variants_summary": "Strawberry Milkshake, Cookies with Cream, Vanilla Ice-Cream", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/ronnie-coleman-king-mass-xl-gainer-10lbs", "item_no": 80}, {"id": 8080914808877, "title": "Ronnie Coleman King Mass XL Gainer 15lbs", "brand": "RC Signature Series", "category": "Mass Gainers", "tier": "", "retail_price": 24000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/RCKingMass15lbChocolateatSilverFoxSupplement.jpg?v=1784031063", "sku": "KING-MASS-SFS", "variants_summary": "Dark Chocolate", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/ronnie-coleman-king-mass-xl-gainer-15lbs", "item_no": 81}, {"id": 8080915202093, "title": "Rule1 Mass Gainer 12lb by Rule1 Proteins", "brand": "Rule One", "category": "Mass Gainers", "tier": "", "retail_price": 22500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/R1-Rule1-12lb-Mass-Gainer.png?v=1784031009", "sku": "RULE1-MASS-SFS", "variants_summary": "12lb / Chocolate Fudge", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rule1-mass-gainer-6lb", "item_no": 82}, {"id": 8080915169325, "title": "Rule1 Mass Gainer 6lbs by Rule1 Proteins", "brand": "Rule One", "category": "Mass Gainers", "tier": "", "retail_price": 15000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/R1-Rule1-Mass-Gainer-6lb-at-Silver-Fox-Supplement.jpg?v=1784031012", "sku": "RULE1-GAINER-SFS", "variants_summary": "Chocolate Fudge, Cookies & Creme, Vanilla Cream", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/r1-rule1-mass-gainer-6lb", "item_no": 83}, {"id": 8244869300269, "title": "BUNDLE 🔥 Gainer Bag + Pre-workout + Creatine with 78% OFF!", "brand": "Silver Fox Supplement", "category": "Mass Gainers", "tier": "", "retail_price": 33000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/AzadiBundleOffer.png?v=1756301583", "sku": "SF-8244869300269", "variants_summary": "Orange / Gold Lean Mass 6kg (Chocolate) / Gold Creatine Unflavored (60 Ser), Orange / Anabolic Mass 7kg (Cookies & Cream) / Gold Creatine Unflavored (60 Ser), Orange / Anabolic Mass 7kg (Chocolate) / Gold Creatine Unflavored (60 Ser)...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bundle-🔥-gainer-bag-pre-workout-creatine-with-78-off", "item_no": 84}, {"id": 8488483815469, "title": "Ripped Mass 3kg by Skull Labs", "brand": "Skull Labs", "category": "Mass Gainers", "tier": "", "retail_price": 17000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/skull-labs-ripped-mass-3-kg.jpg?v=1790852995", "sku": "SF-8488483815469", "variants_summary": "Vanilla", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/ripped-mass-3kg-by-skull-labs", "item_no": 85}, {"id": 15231732285485, "title": "Universal Nutrition Animal M-Stak, 21 Packs", "brand": "Universal Nutrition", "category": "Mass Gainers", "tier": "", "retail_price": 15200.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MStak_21_OCT2023_1.png?v=1785420997", "sku": "SF-15231732285485", "variants_summary": "21 Packs", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/universal-nutrition-animal-m-stak-21-packs", "item_no": 86}, {"id": 8287790989357, "title": "Hyperbolic Mass gH 2kg by USN", "brand": "USN", "category": "Mass Gainers", "tier": "", "retail_price": 9500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/6009698925675-hyperbolic-mass-strawberry-2kg-1-700x700.jpg?v=1759929907", "sku": "6009698925668", "variants_summary": "Strawberry Cheesecake", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/hyperbolic-mass-gh-2kg-by-usn", "item_no": 87}, {"id": 15129678151725, "title": "Hyperbolic Mass GH 6KG by USN", "brand": "USN", "category": "Mass Gainers", "tier": "", "retail_price": 22000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Hyperbolic_mass_gh_bag.png?v=1784028799", "sku": "USN-HYPERBOLICBAG-SFS", "variants_summary": "Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/hyperbolic-mass-gh-6kg-by-usn", "item_no": 88}, {"id": 15371855724589, "title": "VIKING FORCE Fury Gainer Protein Ultimate 12LB", "brand": "Viking Force", "category": "Mass Gainers", "tier": "", "retail_price": 24000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/51Tx5OT6qvL.jpg?v=1789039493", "sku": "VIKING-FURY12LB-SFS", "variants_summary": "Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/viking-force-fury-gainer-protein-ultimate-12lb", "item_no": 89}, {"id": 15129662029869, "title": "Warrior Lean Mass Gainer 5.04kg", "brand": "Warrior", "category": "Mass Gainers", "tier": "", "retail_price": 25500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/warrior_wild_lean_mass_5kg.jpg?v=1784028806", "sku": "WARRIOR-MASS5KG-SFS", "variants_summary": "Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/warrior-lean-mass-gainer-5-04kg", "item_no": 90}, {"id": 8080917004333, "title": "Napalm Mass 3kg by Fitness Authority", "brand": "Xtreme", "category": "Mass Gainers", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/FA-Naplam-Mass-3kg-at-Silver-Fox-Supplement.jpg?v=1784030855", "sku": "NAPALM-3KG-SFS", "variants_summary": "Chocolate, Bunty, Strawberry...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/fa-napalm-mass-3kg", "item_no": 91}, {"id": 15397212225581, "title": "Applied Nutrition Creatine Monohydrate Flavored - 50 Servings", "brand": "Applied Nutrition", "category": "Creatine", "tier": "", "retail_price": 7000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Creatine-FLV.png?v=1790683781", "sku": "AN-CREATINE50S-SFS", "variants_summary": "Strawberry & Raspberry", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/applied-nutrition-creatine-monohydrate-flavored-50-servings", "item_no": 92}, {"id": 8343695163437, "title": "Army1 Pure Creatine 60 Servings", "brand": "Army1", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/army1purecreatine.png?v=1784030364", "sku": "ARMY1-CREATINE-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/army1-pure-creatine-60-servings", "item_no": 93}, {"id": 8390813220909, "title": "BAD ASS® CREA 300g Multi Creatine Powder 52 Servings", "brand": "Bad Ass", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bad-ass-crea-300-g.jpg?v=1784029452", "sku": "BADASS-CREATINE-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bad-ass®-crea-300g-multi-creatine-powder-52-servings", "item_no": 94}, {"id": 8080915103789, "title": "Red Rex Creatine Monohydrate Flavored 50 Servings", "brand": "Big Ramy Labs", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Creatine-Mango-front-View.png?v=1784031023", "sku": "REDREX-CREATINE-SFS", "variants_summary": "Mango, Orange", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/red-rex-creatine-monohydrate-50-servings", "item_no": 95}, {"id": 8080914972717, "title": "Red Rex Creatine Monohydrate Unlfavored 60 Servings", "brand": "Big Ramy Labs", "category": "Creatine", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/creatinecanfrontlabel.png?v=1784031053", "sku": "REDREX-CREATINE-SFS", "variants_summary": "Unflavored", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/red-rex-creatine-monohydrate-unlfavored-60-servings", "item_no": 96}, {"id": 15371966971949, "title": "CONDEMNED 100% Pure Creatine Monohydrate Unflavored 80sv", "brand": "Condemned Labz", "category": "Creatine", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/creatine-monohydrate-80-servings-essentials-condemned-labz-710163.jpg?v=1789041846", "sku": "CNDMND-CREATINE80S-SFS", "variants_summary": "80 Servings", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/condemned-100-pure-creatine-monohydrate-unflavored-80sv", "item_no": 97}, {"id": 8080917037101, "title": "FA Core Creatine 340g 50 Servings", "brand": "FA", "category": "Creatine", "tier": "", "retail_price": 5000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/fa-core-creatine-50-servings.jpg?v=1784030553", "sku": "CORE-CREATINE-SFS", "variants_summary": "Dragon Fruit, Mango, Unflavored", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/fa-core-creatine-340g", "item_no": 98}, {"id": 8160904118317, "title": "FA Ice Creatine Flavored | 60 Servings", "brand": "FA", "category": "Creatine", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/FA_ice_createing.png?v=1784030539", "sku": "SF-8160904118317", "variants_summary": "Icy Citrus & Peach, Icy Mango & Passion Fruit, Icy Lychee...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/fa-ice-creatine-flavored-60-servings", "item_no": 99}, {"id": 8232380629037, "title": "Xtreme Napalm Creatine Monohydrate 66 Servings 330g by FA", "brand": "FA", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Napalm_Creatine_66_servings.png?v=1756301588", "sku": "SF-8232380629037", "variants_summary": "Unflavored / 66 Servings", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/xtreme-napalm-creatine-monohydrate-66-servings-330g-by-fa", "item_no": 100}, {"id": 8488427192365, "title": "Galvanize Nutrition Creatine Monohydrate 500G Unflavored", "brand": "Galvanize Nutrition", "category": "Creatine", "tier": "", "retail_price": 10000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/galvanize-nutrition-creatine-monohydrate-500g-unflavored-01.jpg?v=1784028912", "sku": "SF-8488427192365", "variants_summary": "100 Servings", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/galvanize-nutrition-creatine-monohydrate-500g-unflavored", "item_no": 101}, {"id": 8488315846701, "title": "GatSport Creatine Monohydrate 100 Servings", "brand": "GAT Sport", "category": "Creatine", "tier": "", "retail_price": 10000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/GAT_Creatine500_Product-Image.jpg?v=1784028916", "sku": "SF-8488315846701", "variants_summary": "100 Servings", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/gat-sport-creatine-monohydrate-100-servings", "item_no": 102}, {"id": 8211698253869, "title": "Anabolic Crea10 30 Servings | Kevin Levrone", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kl-anabolic-crea10-207-grams-dragon-fruit.webp?v=1784030500", "sku": "SF-8211698253869", "variants_summary": "Citrus Peach, Grape, Orange Mango", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/anabolic-crea10-30-servings-kevin-levrone", "item_no": 103}, {"id": 8080916742189, "title": "Anabolic Creatine 60 Servings by Kevin Levrone", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kevin-levrone-anabolic-creatine-60-servings-at-silver-fox-supplement-1.jpg?v=1784030551", "sku": "ANABOLIC-CREATINE-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-anabolic-creatine-60-servings", "item_no": 104}, {"id": 8211667386413, "title": "Anabolic Creatine Monohydrate 600g | 120 Servings", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 9800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/anabolic-creatine-600-g.jpg?v=1784030509", "sku": "SF-8211667386413", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-anabolic-creatine-monohydrate-600g-120-servings", "item_no": 105}, {"id": 8226032123949, "title": "Gold Creatine 100 Servings (500g) | Kevin Levrone", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 9800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin_Levrone_Gold_Creatine_500g_Supplement.jpg?v=1756301603", "sku": "SF-8226032123949", "variants_summary": "Unflavored", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/gold-creatine-100-servings-500g-kevin-levrone", "item_no": 106}, {"id": 8080913432621, "title": "Gold Creatine 100 Servings by Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 5800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/goldcreatine100servings.jpg?v=1784031259", "sku": "GOLD-300G-SFS", "variants_summary": "100 Servings / Unflavored", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-gold-creatine-100-servings", "item_no": 107}, {"id": 8376139415597, "title": "Gold Creatine Chews 240 Tabs by Kevin Levrone Signature Series", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/GoldCreatineChews240tabs.jpg?v=1784029468", "sku": "SF-8376139415597", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/gold-creatine-chews-240-tabs-by-kevin-levrone-signature-series", "item_no": 108}, {"id": "8080918216749_6000.0", "title": "Gold Creatine Monohydrate 300g | Kevin Levrone", "brand": "Kevin Levrone", "category": "Creatine", "tier": "Unflavored", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/goldcreatinemonohydrate60servings.webp?v=1756301607", "sku": "GOLD-CREATINE-SFS", "variants_summary": "Unflavored", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kl-gold-creatine-60-servings", "item_no": 109}, {"id": "8080918216749_6500.0", "title": "Gold Creatine Monohydrate 300g | Kevin Levrone", "brand": "Kevin Levrone", "category": "Creatine", "tier": "Blue Raspberry / Sour Watermelon / Grape", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/goldcreatinemonohydrate60servings.webp?v=1756301607", "sku": "GOLD-CREATINE-SFS", "variants_summary": "Blue Raspberry, Sour Watermelon, Grape", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kl-gold-creatine-60-servings", "item_no": 110}, {"id": 8259010854957, "title": "Levro Mono 500g Creatine Monohydrate 100 Servings", "brand": "Kevin Levrone", "category": "Creatine", "tier": "", "retail_price": 9300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/LevroMonohydratecreatine.png?v=1784030403", "sku": "LEVRO-MONO-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/levro-mono-500g-creatine-monohydrate-100-servings", "item_no": 111}, {"id": 8343786717229, "title": "Labrada Crea Lean | 100% Pure Creatine Monohydrate", "brand": "Labrada", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/labrada_creatine.png?v=1784030356", "sku": "LABRADA-CREATINE-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/labrada-crea-lean-100-pure-creatine-monohydrate", "item_no": 112}, {"id": 8080915890221, "title": "MuscleTech Creatine | Platinum 100% Creatine 90 Servings", "brand": "MuscleTech", "category": "Creatine", "tier": "", "retail_price": 11000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/muscletech-int-platinum-100-creatine-monohydrate.png?v=1784030940", "sku": "MUSCLETECH-CREATINE-SFS", "variants_summary": "Unflavored", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-creatine-80-servings", "item_no": 113}, {"id": 8343829938221, "title": "Mutant Creatine | Micronized Creatine Monohydrate 60 Servings", "brand": "Mutant", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/mutantcreatinefront-min.png?v=1784030346", "sku": "MUTANT-CREATINE-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/mutant-creatine-micronized-creatine-monohydrate-60-servings", "item_no": 114}, {"id": 15397280940077, "title": "Nutrex Creatine + HMB – 5g Micronized Creatine + 1.5g HMB", "brand": "Nutrex Research", "category": "Creatine", "tier": "", "retail_price": 7800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/CreatineHMB-SW-FR.png?v=1790686354", "sku": "NUTREX-CREATINEHMB-SFS", "variants_summary": "Strawberry Watermelon", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-creatine-hmb-5g-micronized-creatine-1-5g-hmb", "item_no": 115}, {"id": 15397294440493, "title": "Nutrex Creatine for Women – 5g Micronized Creatine + Collagen, BCAAs & Biotin", "brand": "Nutrex Research", "category": "Creatine", "tier": "", "retail_price": 9500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/CreatineforWomen-V3-PL-FR.png?v=1790686674", "sku": "NUTREX-CREATINGWMN-SFS-1", "variants_summary": "Pink Lemonade, Peach Mango", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-creatine-for-women-5g-micronized-creatine-collagen-bcaas-biotin", "item_no": 116}, {"id": 8488478146605, "title": "Nutrex Creatine Monohydrate 1kg Unflavored", "brand": "Nutrex Research", "category": "Creatine", "tier": "", "retail_price": 14500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Creatine-200-B-FR.png?v=1784028903", "sku": "SF-8488478146605", "variants_summary": "200 Servings", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-creatine-monohydrate-1kg-unflavored", "item_no": 117}, {"id": 15397195284525, "title": "Nutrex Flavored Creatine Monohydrate 60 Servings", "brand": "Nutrex Research", "category": "Creatine", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Creatine-Flavored-390-SW-FR.png?v=1790682128", "sku": "NUTREX-CREATINE60S-SFS", "variants_summary": "Strawberry Watermelon", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-flavored-creatine-monohydrate-60-servings", "item_no": 118}, {"id": 8352869679149, "title": "ON Creatine 60s | Micronized Creatine | Optimum Nutrition", "brand": "Optimum Nutrition", "category": "Creatine", "tier": "", "retail_price": 11000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/on-1153060_Image_01.png?v=1784030308", "sku": "ON-CREATINE60s-SFS", "variants_summary": "Unflavored", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/on-creatine-60s-micronized-creatine-optimum-nutrition", "item_no": 119}, {"id": 8479726567469, "title": "ProScience Creatine 200 Servings 1kg", "brand": "PROSCIENCE", "category": "Creatine", "tier": "", "retail_price": 15000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ChatGPT_Image_Sep_28_2026_01_36_34_PM.png?v=1790584632", "sku": "SF-8479726567469", "variants_summary": "Unflavored / 200", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/proscience-creatine-60-servings", "item_no": 120}, {"id": 8343691591725, "title": "PROSCIENCE Creatine Monohydrate 5000MG", "brand": "PROSCIENCE", "category": "Creatine", "tier": "", "retail_price": 5800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ProScience-Nutra-Creatine-web-800x1000.png?v=1784030366", "sku": "SF-8343691591725", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/proscience-creatine-monohydrate-5000mg", "item_no": 121}, {"id": "8488428797997_9500.0", "title": "RC Creatine XS Unflavoured Powder", "brand": "RC Signature Series", "category": "Creatine", "tier": "120 Servings", "retail_price": 9500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ronnie-coleman-signature-series-creatine-xs-300-grams-essentials-1218393422_1024x1024_6d39a68b-4668-4ac7-a4c2-594d72d305db.png?v=1784028910", "sku": "N/A", "variants_summary": "120 Servings", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/rc-creatine-xs-unflavoured-powder-400-servings", "item_no": 122}, {"id": "8488428797997_13000.0", "title": "RC Creatine XS Unflavoured Powder", "brand": "RC Signature Series", "category": "Creatine", "tier": "400 Servigns", "retail_price": 13000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ronnie-coleman-signature-series-creatine-xs-1-kilo-essentials-1218393421_large_9a3cdd92-688f-4c68-b21a-cc91bf63e4f3.png?v=1784028907", "sku": "N/A", "variants_summary": "400 Servigns", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/rc-creatine-xs-unflavoured-powder-400-servings", "item_no": 123}, {"id": "8488428797997_14500.0", "title": "RC Creatine XS Unflavoured Powder", "brand": "RC Signature Series", "category": "Creatine", "tier": "200 Servings", "retail_price": 14500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ronnie-coleman-signature-series-creatine-xs-1-kilo-essentials-1218393421_large_9a3cdd92-688f-4c68-b21a-cc91bf63e4f3.png?v=1784028907", "sku": "N/A", "variants_summary": "200 Servings", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/rc-creatine-xs-unflavoured-powder-400-servings", "item_no": 124}, {"id": 8404807909421, "title": "Micronized Creatine 30 Servings Flavored by Rule1", "brand": "Rule One", "category": "Creatine", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Creatine_30s_Blue-Raspberry0001.png?v=1784029215", "sku": "RULE1-CREATINE-SFS", "variants_summary": "Blue Raspberry", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/micronized-creatine-30-servings-flavored-by-rule1", "item_no": 125}, {"id": 8080918183981, "title": "Skull Creatine 300g 60 Servings | Skull Labs", "brand": "Skull Labs", "category": "Creatine", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/skull-labs-creatine-60-Servings-at-silver-fox-supplement.jpg?v=1784030768", "sku": "SKULL-CREATINE-SFS", "variants_summary": "unflavored", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/skull-creatine-300g-66-servings-skull-labs", "item_no": 126}, {"id": 8098095464493, "title": "USN Pure Creatine Monohydrate 60 Servings", "brand": "USN", "category": "Creatine", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/USNCreatine60servings.jpg?v=1784030655", "sku": "USN-CREATINE-SFS", "variants_summary": "Unflavored", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/usn-pure-creatine-monohydrate-60-servings", "item_no": 127}, {"id": 8160916570157, "title": "ONE RAW Creatine | 100 Servings | Zoomad Labs in Pakistan", "brand": "Zoomad Labs", "category": "Creatine", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/CHERRY-BOMB.webp?v=1784030523", "sku": "SF-8160916570157", "variants_summary": "Cherry Bomb, Wild Berries, Candy Coke...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/one-raw-creatine-100-servings-zoomad-labs-in-pakistan", "item_no": 128}, {"id": 8259014590509, "title": "ABE Pre-Workout 30 Servings | Applied Nutrition", "brand": "Applied Nutrition", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ABEUltimatePre-Workout375g-BaddyBerry.jpg?v=1759993242", "sku": "ABE-PRE-SFS", "variants_summary": "Baddy Berry, Candy Ice Blast, Cool Watermelon", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/abe-pre-workout-30-servings-applied-nutrition", "item_no": 129}, {"id": 8080918118445, "title": "AN Caffeine Free Pump 3G Pre-workout 50 Scoops", "brand": "Applied Nutrition", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/applied-nutrition-pump-3g-non-stim-at-silver-fox-supplement.jpg?v=1784030775", "sku": "AN-CAFFEINE-SFS", "variants_summary": "Ice Blue Raz", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/an-caffeine-free-pump-3g-pre-workout-50-scoops", "item_no": 130}, {"id": 8343717937197, "title": "BPI Beta Alanine - 180 Gms - Unflavoured", "brand": "BPI Sports", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/betaalanine_3.png?v=1784030360", "sku": "BPI-BETAALANINE-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/bpi-beta-alanine-180-gms-unflavoured", "item_no": 131}, {"id": "8080913924141_10500.0", "title": "NO Xplode Pre-Workout by BSN", "brand": "BSN", "category": "Pre-Workouts & Energy", "tier": "30 Servings", "retail_price": 10500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bsn_no_xplode_30_servings_blue_razz.png?v=1784031166", "sku": "BSN-PREWORKOUT-SFS", "variants_summary": "30 Servings / Blue Razz, 30 Servings / Watermelon, 30 Servings / Grape", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bsn-no-xplode-30-servings", "item_no": 132}, {"id": "8080913924141_18500.0", "title": "NO Xplode Pre-Workout by BSN", "brand": "BSN", "category": "Pre-Workouts & Energy", "tier": "60 Servings", "retail_price": 18500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bsn_no_xplode_30_servings_blue_razz.png?v=1784031166", "sku": "N/A", "variants_summary": "60 Servings / Blue Razz, 60 Servings / Watermelon, 60 Servings / Grape", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bsn-no-xplode-30-servings", "item_no": 133}, {"id": 8219465875501, "title": "C4 Original Pre Workout by Cellucor | 50 Servings", "brand": "Cellucor", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 10500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/C4_Original_Hero-White-v3k_f92fc18c-9b2e-4230-8c38-e9892fa7d381.png?v=1784030492", "sku": "SF-8219465875501", "variants_summary": "Icy Blue Raspberry, Orange, Sour Green Apple...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/c4-original-pre-workout-by-cellucor-50-servings", "item_no": 134}, {"id": 8080917692461, "title": "C4 Ripped 30 Servings | Cellecur", "brand": "Cellucor", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 9000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/c4ripped30servings.png?v=1784030804", "sku": "C4-RIPPED-SFS", "variants_summary": "Icy Blue Razz, Tropical Punch", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/c4-ripped-30-serving", "item_no": 135}, {"id": 15371869388845, "title": "C4 Whey Protein Powder - 22 Servings Hershey's Chocolate", "brand": "Cellucor", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 14000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/c4-whey-protein-powder-22-servings-hershey-s-chocolate.jpg?v=1789039877", "sku": "SF-15371869388845", "variants_summary": "Hershey's Chocolate", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/c4-whey-protein-powder-22-servings-hersheys-chocolate", "item_no": 136}, {"id": 8080917495853, "title": "Challenger Nutrition The Pump Extreme Pre-workout 30 Servings", "brand": "Challenger Nutrition", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/The-pump-BlurRazz-at-Silver-Fox-Supplement.jpg?v=1784030815", "sku": "CHALLENGER-PUMP-SFS", "variants_summary": "Blue Razz, Orange, Fruit Punch", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/challenger-nutrition-the-pump-extreme-pre-workout-30-servings", "item_no": 137}, {"id": 8080913498157, "title": "EVP Extreme N.O. Pre-Workout Supplement", "brand": "Evogen Nutrition", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 18000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/GMMASTEREVP3D_cottoncandy1122.png?v=1784031216", "sku": "EVP-EXTREME-SFS", "variants_summary": "Grape Cotton Candy, Strawberry Lemonade, Victory Punch...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/evp-extreme-n-o-pre-workout", "item_no": 138}, {"id": 8300316688429, "title": "Beast The Pre-Workout 300g by Galvanize Chrome", "brand": "Galvanize Nutrition", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/galvanize-nutrition-chrome-beast-300g-mango-sorbet-01.jpg?v=1784030395", "sku": "SF-8300316688429", "variants_summary": "Mango Sorbet", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/beast-the-pre-workout-300g-by-galvanize-chrome", "item_no": 139}, {"id": 15396169023533, "title": "GEAR Pre Pump Shock 350g", "brand": "GEAR", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/gear-pre-pump-shock-350g.jpg?v=1790601200", "sku": "GEAR-PUMP40SV-SFS", "variants_summary": "Citrus-Peach", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/gear-pre-pump-shock-350g", "item_no": 140}, {"id": 8158837801005, "title": "Insane Labz Psychotic 60 Servings", "brand": "Insane Labz", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 11000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Psycotic_60_servings_by_insane_labz.png?v=1784030557", "sku": "SF-8158837801005", "variants_summary": "Grape, Watermelon", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/insane-labz-psychotic-60-servings", "item_no": 141}, {"id": 8108728549421, "title": "Psychotic New 35 Servings | Insane Labz", "brand": "Insane Labz", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Psycoticnewpacking35servingsatsilverfoxsupplement.png?v=1784030635", "sku": "Psychotic-35-SFS", "variants_summary": "Peach Mango, Cotton Candy, Grape...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/insane-labz-psychotic-new-35-servings", "item_no": 142}, {"id": "8080916807725_5200.0", "title": "The Curse Creatine Micronized by JNX Sports", "brand": "JNX Sports", "category": "Pre-Workouts & Energy", "tier": "60 Servings", "retail_price": 5200.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/JNXSport-the-curse-creatine-micronized-60-servings-at-silver-fox-supplement_55fd9cc4-b0ae-4c8c-87e2-37d4d61f458f.jpg?v=1784030864", "sku": "JNX-CREATINE-SFS", "variants_summary": "60 Servings", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/jnx-sports-the-curse-creatine-micronized-60-servings", "item_no": 143}, {"id": "8080916807725_9800.0", "title": "The Curse Creatine Micronized by JNX Sports", "brand": "JNX Sports", "category": "Pre-Workouts & Energy", "tier": "100 Servings", "retail_price": 9800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/JNX_Sports_The_Curse_Creatine_100_Serve_Unflavored_Render_Front_700x_5d41da51-9c88-45ea-8e7d-fb2721982b53.png?v=1789041139", "sku": "N/A", "variants_summary": "100 Servings", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/jnx-sports-the-curse-creatine-micronized-60-servings", "item_no": 144}, {"id": 8080914579501, "title": "The Curse Pre 50 Servings by JNXSports", "brand": "JNX Sports", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/0388JNXSports-TheCurse_50ServeLemonRush-Front_700x_17b152ac-d020-4778-ab3b-db4bacc354e4.png?v=1784031089", "sku": "JNX-CURSE-SFS", "variants_summary": "Lemon Rush, Green Apple, Tropical Storm...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/jnxsports-the-curse-pre-50-servings", "item_no": 145}, {"id": 15372022153261, "title": "Anabolic On Stage Pump 313g | Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/anabolic-on-stage-pump-313-g.jpg?v=1789046587", "sku": "KL-ONPUMP-SFS-1", "variants_summary": "Mango-Lemon, Lychee, Dragon Fruit", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/anabolic-on-stage-pump-313g-kevin-levrone-ss", "item_no": 146}, {"id": 8080914022445, "title": "KL Full Blown Energizer 60 Servings", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/levrone-gold-full-blown-energizer-270-g.jpg?v=1789045910", "sku": "FULL-BLOWN-SFS", "variants_summary": "Blue Raspberry, Exotic, Sour Watermelon...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kl-full-blown-energizer-30-servings", "item_no": 147}, {"id": 8080916316205, "title": "LevroPump Pre-workout 60 Servings | SFS", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7200.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kl-levropump-preworkout-44-servings-at-silver-fox-supplement.jpg?v=1784030904", "sku": "LEVRO-PUMP-SFS", "variants_summary": "60 Servings / Kiwi", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-levropump-pre-workout", "item_no": 148}, {"id": 8390707937325, "title": "Maryland Muscle Machine Pre-workout | Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/gold-maryland-muscle-machine-385-g.jpg?v=1784029466", "sku": "KL-MARYLAND-SFS", "variants_summary": "Citrus Peach", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/maryland-muscle-machine-pre-workout-kevin-levrone-ss", "item_no": 149}, {"id": 8080913956909, "title": "Scatterbrain 60 Servings by Kevin Levrone SS", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/klscatterbrain60servings.png?v=1784031163", "sku": "KL-SCATTERBRAIN-SFS", "variants_summary": "Orange-Mango, Citrus-Peach, Blackberry-Pineapple...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kl-scatterbrain-60-servings", "item_no": 150}, {"id": 8211679281197, "title": "Shaaboom Ice Pump 50 Servings | Kevin Levrone Signature Series!", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 9300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/shaaboom-ice-pump-463-g.jpg?v=1784030506", "sku": "SF-8211679281197", "variants_summary": "Icy Blackberry-Pineapple, Icy Mango-Passion, Icy Orange-Mango", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/shaaboom-ice-pump-50-servings-kevin-levrone-signature-series", "item_no": 151}, {"id": 8080916381741, "title": "Shaaboom Pump 44 Servings By Kevin Levrone", "brand": "Kevin Levrone", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 10000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kevin-levrone-shaboom-pump-preworkout-at-silver-fox-supplement-pakistan.jpg?v=1784030900", "sku": "SHAABOOM-PUMP-SFS", "variants_summary": "Sour Watermelon, Exotic, Lychee...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/kevin-levrone-shaaboom-pump-44-servings", "item_no": 152}, {"id": 15231648694317, "title": "Labrada Super Charge Pre-workout Concentrate", "brand": "Labrada", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 9000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/LabradaSuperchargeCranberry315gview1_1_5000x_58276525-5516-4938-bfc1-315017ccde32.webp?v=1785419341", "sku": "SF-15231648694317", "variants_summary": "Orange", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/labrada-super-charge-pre-workout-concentrate", "item_no": 153}, {"id": 8080916217901, "title": "Muscle Pro Pre-workout 44 Servings by LivePro", "brand": "LivePro", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Livepro-muscle-pro-pre-workout-at-silver-fox-supplement.jpg?v=1784030908", "sku": "MUSCLE-PRO-SFS", "variants_summary": "Fruit Punch", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/livepro-muscle-pro-pre-workout-44-servings", "item_no": 154}, {"id": 8404804370477, "title": "MuscleRulz Pre Rulz Extreme Pre-Workout | 400mg Caffeine 30/60SV", "brand": "Muscle Rulz", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MuscleRulz-pre-workout-EU-Version-GREENAPPLESIDE1_870x1131_cfd3d0ff-2af4-4f78-b27f-edb70fe3e81f.png?v=1784029221", "sku": "MUSCLERULZ-RULZCAF-SFS", "variants_summary": "Green Apple, Orange", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/musclerulz-pre-rulz-extreme-pre-workout-400mg-caffeine-30-60sv", "item_no": 155}, {"id": 8404803158061, "title": "Pre Rulz Shred: 325mg Caffeine Fat-Burning Pre-Workout Powder", "brand": "Muscle Rulz", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/3.MR_Pre_Rulz_Shred_Peach_Coconut01_870x1131_27c47f8e-5c29-499f-84e2-1bc444ebfe38.png?v=1784029228", "sku": "MUSCLERULZ-PRERULZ-SFS", "variants_summary": "Peach-Coconut, Pink Lemonade, Green Apple", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/pre-rulz-shred-325mg-caffeine-fat-burning-pre-workout-powder", "item_no": 156}, {"id": 8390708330541, "title": "NitroTest - 2-in-1 Pre-workout + Test Booster", "brand": "MuscleMeds", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 9000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/nitrotest-blue-raspberry-218789_700x_4f5f6b59-0016-4515-9e13-504272d42e32.png?v=1784029456", "sku": "MUSCLEMEDS-NITROTEST-SFS", "variants_summary": "Blue Raspberry", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/nitrotest-2-in-1-pre-workout-test-booster", "item_no": 157}, {"id": 8250982006829, "title": "EuphoriQ Pre-workout 340g 20 Servings by MuscleTech", "brand": "MuscleTech", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 12500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/freepik_br_de08a99b-ae81-45f9-bfa8-4a2c8ae288e2.png?v=1756301568", "sku": "MUSCLETECH-EUPHORIQ-SFS", "variants_summary": "Boogieman Punch", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/euphoriq-pre-workout-340g-20-servings-by-muscletech", "item_no": 158}, {"id": 8488505376813, "title": "MuscleTech VaporX5 Pre-Workout 30 Servings", "brand": "MuscleTech", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/muscletech-int-vapor-x5.png?v=1784028880", "sku": "SF-8488505376813", "variants_summary": "Blue Razz Freeze, Miami Spring Break", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-vaporx5-pre-workout-30-servings", "item_no": 159}, {"id": 8488516812845, "title": "Mutant Madness Ultra-Concentrated Pre-Workout 30 Servings", "brand": "Mutant", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/33511USMUTANTMADNESSOrangeRushFlavor270g_9.52oz_v2.01_NS-L3.png?v=1784028872", "sku": "SF-8488516812845", "variants_summary": "Peach Man, Orange Rush", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/mutant-madness-ultra-concentrated-pre-workout-30-servings", "item_no": 160}, {"id": 8080914317357, "title": "NPL Blackout Pre-Workout | SFS", "brand": "NPL", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/6009708882677.png?v=1784031145", "sku": "NPL-PREWORKOUT-SFS", "variants_summary": "Cherry Bomb, Tiger's Blood", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/npl-blackout-pre-workout", "item_no": 161}, {"id": 8080914448429, "title": "NPL N.O Charge Pre-workout | SFS", "brand": "NPL", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/6009879963144.png?v=1784031131", "sku": "NPL-PRE-SFS", "variants_summary": "Rasberry / 60 Scoops, Cotton Candy / 60 Scoops", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/npl-n-o-charge-pre-workout", "item_no": 162}, {"id": 8390813810733, "title": "Outrage High Stim Pre-Workout 30 Servings", "brand": "Nutrex Research", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Outrage-FP-FR.png?v=1784029441", "sku": "SF-8390813810733", "variants_summary": "Fruit Punch, Strawberry Watermelon", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/outrage-high-stim-pre-workout-30-servings", "item_no": 163}, {"id": 8343815716909, "title": "PUREGOLD King Intra Workout 500g", "brand": "PUREGOLD", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/intra-lime-n-600x600.webp?v=1784030353", "sku": "PUREGOLD-KING-SFS", "variants_summary": "Peach Mango", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/puregold-king-intra-workout-500g", "item_no": 164}, {"id": 8080913825837, "title": "RC Yeah Buddy Sport 30 Servings", "brand": "RC Signature Series", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/RC_YEAHBUDDY_Pre-Workout.png?v=1790599124", "sku": "RC-YBUDDY-SFS", "variants_summary": "Lemon Splash, Island Crush, Cherry Limead...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/rc-yeah-buddy-sport-30-servings", "item_no": 165}, {"id": 8080915071021, "title": "Big Noise Pump 30 Servings by REDCON1", "brand": "Redcon1", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 4500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Redcon1-Big-Noise-Pump-Formula-S-1-1-e1724413317361.jpg?v=1784031030", "sku": "BIG-NOISE-SFS", "variants_summary": "Watermelon, Strawberry", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/redcon1-big-noise", "item_no": 166}, {"id": 8080915038253, "title": "Total War 30 Serving by REDCON1", "brand": "Redcon1", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/TW_RAINBOWCANDY_30SERV_FLV-2023.png?v=1784031032", "sku": "TOTAL-WAR-SFS-1", "variants_summary": "Strawberry Kiwi, Rainbow Candy, Peach Candy...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/redcon1-total-war-30-serving", "item_no": 167}, {"id": 8080914546733, "title": "Rule1 Roar Ferocious Pre-Workout 30 Servings", "brand": "Rule One", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 7000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/R1_roar_blue_razz.png?v=1784031108", "sku": "R1-ROAR-SFS", "variants_summary": "Blue Razz, Peach Mango, Wild Grape...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/rule1-roar-ferocious-pre-workout-30-servings", "item_no": 168}, {"id": 8446900142125, "title": "GHOST LEGEND", "brand": "Silver Fox Supplement", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 16000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Done-legend-Ghost.webp?v=1784029208", "sku": "SF-8446900142125", "variants_summary": "35", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/ghost-legend", "item_no": 169}, {"id": 15396148641837, "title": "Skull Labs Skull Crusher Pre-Workout 350g – Explosive Energy, Pumps & Focus", "brand": "Skull Labs", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Skull_Crusher_by_Skull_Labs_Hardcore_Pre-Workout_for_Extreme_Performance.png?v=1790600372", "sku": "SKULLLABS-SKULLCRUSHER-SFS-1", "variants_summary": "Citrus-Peach, Mango-Maracuja", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/skull-labs-skull-crusher-pre-workout-350g-explosive-energy-pumps-focus", "item_no": 170}, {"id": 8391817035821, "title": "SKULL LABS® Angel Dust 270 g | 60 Servings", "brand": "Skull Labs", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/skull-labs-angel-dust-270-g_b0ba19f9-58f1-4d3a-838d-9af16e4045bc.jpg?v=1789046076", "sku": "SKULL-ANGELDUST-SFS", "variants_summary": "Dragon Fruit, Mango-Maracuja, Sour Watermelon...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/skull-labs®-angel-dust-270-g-60-servings", "item_no": 171}, {"id": 15372032081965, "title": "TrueFuel Stunt Pre-Workout – 210g (30 Servings)", "brand": "TruFuel", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/5e331455-7932-4d1e-bc13-9f29664ca7c2.jpg?v=1789047312", "sku": "TRUFUEL-STUNT-SFS-1", "variants_summary": "Twisted Dew, Strawberry Kiwi", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/truefuel-stunt-pre-workout-210g-30-servings", "item_no": 172}, {"id": 15231772590125, "title": "Animal Pump Pre-Workout Pill Packs", "brand": "Universal Nutrition", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 15700.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Pump_30packs_1200x1200_73dfb889-50ea-49ad-be38-1c2774724d8e-Photoroom_1.png?v=1785422592", "sku": "SF-15231772590125", "variants_summary": "30 Packs", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/animal-pump-pre-workout-pill-packs", "item_no": 173}, {"id": 8080918151213, "title": "Warrior Creatine Micronized Flavored | 60 Servings", "brand": "Warrior", "category": "Pre-Workouts & Energy", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/warrior_creatine.png?v=1784030771", "sku": "WAR-CREATINE-SFS", "variants_summary": "60 Servings / Blue Razz, 60 Servings / Savage Strawberry", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/warrior-creatine-warrior", "item_no": 174}, {"id": 8121756975149, "title": "Applied Nutrition Amino Fuel | 30 Servings", "brand": "Applied Nutrition", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Applied-Nutrition-Amino-Fuel-EAA-Icy-Blue-Razz-30-Servings.webp?v=1784030591", "sku": "SF-8121756975149", "variants_summary": "Icy Blue Raz, Fruit Salad", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/applied-nutrition-amino-fuel-30-servings", "item_no": 175}, {"id": 8121749602349, "title": "Applied Nutrition BCAA Amino Hydrate 32 Servings", "brand": "Applied Nutrition", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/applied_nutrition_bcaa.png?v=1784030599", "sku": "SF-8121749602349", "variants_summary": "Watermelon", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/applied-nutrition-bcaa-amino-hydrate-32-servings", "item_no": 176}, {"id": 8080913268781, "title": "Red Rex BCAA 2:1:1 | 30 Servings", "brand": "Big Ramy Labs", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/BCAA-front-Lemon-Lime_197e368e-493e-42ff-8843-c4c4445d6fa2.png?v=1784031274", "sku": "REDREX-BCAA-SFS", "variants_summary": "Lemon Lime", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/red-rex-bcaa-2-1-1-30-servings", "item_no": 177}, {"id": 8080917823533, "title": "BPI-Sport Best BCAA 30 Servings", "brand": "BPI Sports", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bpi-sport2.webp?v=1784030797", "sku": "BPI-BCAA-SFS-1", "variants_summary": "Passion Fruit, Rainbow Ice", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bpi-sports-best-bcaa", "item_no": 178}, {"id": 8391833845805, "title": "AMINOx EAAs 375G | 25 Servings by BSN", "brand": "BSN", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bsn-1111094_Image_01.png?v=1784029423", "sku": "BSN-AMINOX-SFS", "variants_summary": "Strawberry Dragon Fruit", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/aminox-eaas-375g-25-servings-by-bsn", "item_no": 179}, {"id": 8247633477677, "title": "Confined EAA BCAA Supplement 30 Servings By Condemned Labz", "brand": "Condemned Labz", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 7800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/confined-eaa-bcaa-recovery-condemned-labz-coconut-lime-685517.jpg?v=1784030414", "sku": "CONFINED-EAA-SFS", "variants_summary": "Coconut Lime, Unicorn Rainbow", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/confined-eaa-bcaa-supplement-30-servings-condemned-labz", "item_no": 180}, {"id": 15372064260141, "title": "FA Nutrition ICE Glutamine – 300g (60 Servings)", "brand": "FA", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ice-glutamine-300-g-Photoroom.png?v=1789049089", "sku": "FA-ICEGLUTAMINE-SFS-1", "variants_summary": "Frozen Orange & Mango, Frozen Mango & Lemon", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/fa-nutrition-ice-glutamine-300g-60-servings", "item_no": 181}, {"id": 8488295071789, "title": "GatSport L-Arginine 180 Tabs", "brand": "GAT Sport", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 9000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Weight-Loss-and-Energy_L-Arginine_Product-Image.jpg?v=1784028922", "sku": "SF-8488295071789", "variants_summary": "180 Tabs", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/gatsport-l-arginine-180-tabs", "item_no": 182}, {"id": 8343874994221, "title": "Insane Labz Demon BCAA 60 Servings", "brand": "Insane Labz", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Demon_BCAA_60_Servings.png?v=1784030339", "sku": "INSANELABZ-DEMON-SFS", "variants_summary": "Grape", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/insane-labz-demon-bcaa-60-servings", "item_no": 183}, {"id": 8080913858605, "title": "JNXSports The Jinx! Hydra BCAA+ 30 Servings", "brand": "JNX Sports", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/The_Jinx_Hydra_BCAA__Amino_Acids_Powder_Lemon_Lime_a_700x_9805d786-d2b7-45f1-a1c3-eda71f134830.png?v=1784031177", "sku": "JNXSPORT-BCAA-SFS", "variants_summary": "Lemon Lime", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/jnxsports-the-jinx-hydra-bcaa", "item_no": 184}, {"id": 8121758515245, "title": "Gold Amino by KL | 550 Tablets", "brand": "Kevin Levrone", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 9500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/KLGoldAmino.png?v=1784030589", "sku": "SF-8121758515245", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/kl-gold-amino-550-tablets", "item_no": 185}, {"id": 15134423613485, "title": "Gold L-Arginine 1000 - 120 Tabs by Kevin Levrone Signature Series", "brand": "Kevin Levrone", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Kevin-Levrone-Gold-L-Arginine-1000-120-Tablets-60-Servings.webp?v=1784028791", "sku": "KL-LARGININE-SFS", "variants_summary": "120 Tabs", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/gold-l-arginine-1000-120-tabs-by-kevin-levrone-signature-series", "item_no": 186}, {"id": 8108728516653, "title": "Amino Hardcore 325 Tablets | Mega Sport", "brand": "Mega Sports", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 10500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/AminoHardcoreChocolateflavor.png?v=1784030638", "sku": "Amino-325-SFS", "variants_summary": "Chocolate, Banana, Fruit", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/mega-sport-amino-hardcore-325-tablets", "item_no": 187}, {"id": 8239700738093, "title": "Carnivor Beef Aminos 300 Tabs by MuslceMeds", "brand": "MuscleMeds", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 9000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MM-Beef-Aminos_Label-070722_700x_b5dbca05-06bd-4c6a-bd2b-a93991637385.jpg?v=1784030447", "sku": "SF-8239700738093", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/carnivor-beef-aminos-300-tabs-by-muslcemeds", "item_no": 188}, {"id": 8488503705645, "title": "MuscleTech Platinum 100% Glutamine | Unflavored", "brand": "MuscleTech", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/54.jpg?v=1784028891", "sku": "SF-8488503705645", "variants_summary": "60 Servings", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-platinum-100-glutamine-unflavored", "item_no": 189}, {"id": 8343845109805, "title": "Mutant Gear | Complete Essential Amino Acids", "brand": "Mutant", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/MutantGear-min.png?v=1784030341", "sku": "MUTANT-GEAR-SFS", "variants_summary": "Rocket Top", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/mutant-gear-complete-essential-amino-acids", "item_no": 190}, {"id": 8080914284589, "title": "NPL 100% Pure L-Glutamine Amino Acid", "brand": "NPL", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/6009879963113.png?v=1784031151", "sku": "NPL-GLUTAMINE-SFS", "variants_summary": "Unflavored / 100 Scoops", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/npl-100-pure-l-glutamine-amino-acid", "item_no": 191}, {"id": 8080914513965, "title": "NPL BCAA EAA 12:1:1 | Silver Fox Supplement", "brand": "NPL", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 5000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/6009708882288.png?v=1784031120", "sku": "NPL-BCAAEAA-SFS", "variants_summary": "Strawberry Kiwi / 40 Scoops, Cotton Candy / 40 Scoops, Tutti Frutti / 40 Scoops", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/npl-bcaa-eaa-12-1-1", "item_no": 192}, {"id": 8080914415661, "title": "NPL BCAAs Amino Pro Supplement", "brand": "NPL", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/6009708881601.png?v=1784031138", "sku": "NPL-BCAA-SFS", "variants_summary": "Tropical Punch, Strawberry Litchi", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/npl-bcaa-amino-pro", "item_no": 193}, {"id": 8226033795117, "title": "EAA+ Hydration 30 Servings | Nutrex Research", "brand": "Nutrex Research", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/EAA-PLv2-Fr.png?v=1784030460", "sku": "NUTREX-EAA-SFS", "variants_summary": "Pink Lemonade, It's Mango Time, Blood Orange", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/eaa-hydration-30-servings-nutrex-research", "item_no": 194}, {"id": 15097850396717, "title": "Nutriversum 2:1:1 BCAA - 360g", "brand": "Nutriversum", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/l_211_bcaa_360g_strawberry-webshop_20230404100004.png?v=1784028819", "sku": "SF-15097850396717", "variants_summary": "Strawberry", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/nutriversum-2-1-1-bcaa-360g", "item_no": 195}, {"id": 8390816071725, "title": "Glutamine XS Unflavored Powder 120", "brand": "RC Signature Series", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ronnie-coleman-signature-series-glutamine-xs-300-grams-essentials-1218383745_1024x1024_23e29d66-bd92-40b7-87e5-22eda3652324.png?v=1784029430", "sku": "RC-GLUTAMINE-SFS", "variants_summary": "Unflavored", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/glutamine-xs-unflavored-powder-120", "item_no": 196}, {"id": 8219567554605, "title": "Rule1 BCAA 60 Servings by Rule1", "brand": "Rule One", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/pineapple.png?v=1784030475", "sku": "SF-8219567554605", "variants_summary": "Pineapple, Peach Mango, Blue Raspberry...", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rule1-bcaa-60-servings", "item_no": 197}, {"id": 8080913727533, "title": "RULE1 Pre Amino Energy 30 Servings", "brand": "Rule One", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Rule1Pre-AminoEnergyat.jpg?v=1784031193", "sku": "RULE1-AMINO-SFS", "variants_summary": "Blue Razz Lemonade", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/rule1-pre-amino-energy", "item_no": 198}, {"id": 15372039979053, "title": "Amino + BCAA 30 Servings | TruFuel", "brand": "TruFuel", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/TruFuel-Reifstar-Aminos-BCCA-Strawberry-Kiwi-1-front_jpg.webp?v=1789047687", "sku": "TRUFUEL-BCAA-SFS", "variants_summary": "Strawberry Kiwi", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/amino-bcaa-30-servings-trufuel", "item_no": 199}, {"id": 15372039389229, "title": "Amino ENRG– 270g (30 Servings) | TruFuel", "brand": "TruFuel", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/TruFuel-Reifstar-Aminos-Energy-Twisted-Dew-1-front_jpg.webp?v=1789047411", "sku": "TRUFUEL-AMINOE-SFS", "variants_summary": "Twisted Dew", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/amino-enrg-270g-30-servings-trufuel", "item_no": 200}, {"id": 15399061717037, "title": "TruFuel Amino + BCAA 273g (30 Servings)", "brand": "TruFuel", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/TruFuel-Reifstar-Aminos-BCCA-Strawberry-Kiwi-1-front.jpg?v=1790771853", "sku": "TRUFUEL-AMINO+BCAA-SFS", "variants_summary": "Strawberry Kiwi", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/trufuel-amino-bcaa-273g-30-servings", "item_no": 201}, {"id": 15399049101357, "title": "TruFuel Amino ENRG – 270g (30 Servings)", "brand": "TruFuel", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/TruFuel-Reifstar-Aminos-Energy-Twisted-Dew-1-front.jpg?v=1790770966", "sku": "TRUFUEL-AMINOENRG-SFS", "variants_summary": "Twisted Dew", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/trufuel-amino-enrg-270g-30-servings", "item_no": 202}, {"id": 8244134182957, "title": "L-Glutamine 300g 60 Servings by Unitech", "brand": "Unitech", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/l-glutamine.png?v=1784030435", "sku": "SF-8244134182957", "variants_summary": "Unflavored", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/l-glutamine-300g-60-servings-by-unitech", "item_no": 203}, {"id": 8080914251821, "title": "Universal 100% Beef Amino by Universal Nutrition", "brand": "Universal Nutrition", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 9500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/universalbeefamino.png?v=1784031154", "sku": "UNIVERSAL-BEEF-SFS", "variants_summary": "400 Tabs", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/universal-100-beef-aminos", "item_no": 204}, {"id": "8121748717613_7500.0", "title": "Scivation Xtend X The Original BCAA", "brand": "Xtend", "category": "BCAA & Amino Acids", "tier": "30 Servings", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/XTEND_1136_Digital_PDPUpdates_September2024_Hero-OrigBRI.png?v=1784030609", "sku": "N/A", "variants_summary": "30 Servings / Blue Raspberry Ice, 30 Servings / Knockout Fruit Punch, 30 Servings / Lemon Lime Squeeze", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/scivation-xtend-x-the-original-bcaa-90-servings", "item_no": 205}, {"id": "8121748717613_16000.0", "title": "Scivation Xtend X The Original BCAA", "brand": "Xtend", "category": "BCAA & Amino Acids", "tier": "90 Servings", "retail_price": 16000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/xtendbcaa90servingss_8f167de1-6e9e-4916-adf7-c2a1b3172a33.png?v=1784030605", "sku": "N/A", "variants_summary": "90 Servings / Blue Raspberry Ice, 90 Servings / Knockout Fruit Punch, 90 Servings / Lemon Lime Squeeze", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/scivation-xtend-x-the-original-bcaa-90-servings", "item_no": 206}, {"id": 15372056002605, "title": "Xtend Elite Recovery - BCAA (30 Servings)", "brand": "Xtend", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/XTEND_1144_Digital_Relabel_FlowThrough_Assets_PDPs_OnGreyBackground-XTEND-OG30-WE-Label.png?v=1789048526", "sku": "XTEND-ELITE-SFS", "variants_summary": "Watermelon Explosion", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/xtend-elite-recovery-bcaa-30-servings", "item_no": 207}, {"id": 8391836008493, "title": "XTEND Sport 7g BCAA Powder 30 Servings", "brand": "Xtend", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 7800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/XTEND_1136_Digital_PDPUpdates_September2024_Hero-SportSKS_0eee74f1-8371-4efa-acc9-7ecb5f147e49.png?v=1784029243", "sku": "XTEND-BCAA-SFS", "variants_summary": "Strawberry Kiwi Splash", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/xtend-sport-7g-bcaa-powder-30-servings", "item_no": 208}, {"id": 15397308268589, "title": "XTEND® EAA Essential Amino Acids Powder 30 Servings | Enhance + Recovery", "brand": "Xtend", "category": "BCAA & Amino Acids", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/XTEND_1144_Digital_Relabel_FlowThrough_Assets_PDPs_OnGreyBackground-XTEND-EAA-BO.png?v=1790687460", "sku": "SF-15397308268589", "variants_summary": "Blood Orange, Lemon Lime", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/xtend®-eaa-essential-amino-acids-powder-30-servings-enhance-recovery", "item_no": 209}, {"id": 8080917954605, "title": "CLA+ Carnitine 50 Servings | BPI Sport", "brand": "BPI Sports", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 8000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/bpi-sports-cla-carnitine-snow-cone-50-servings-at-silver-fox-supplement.jpg?v=1784030783", "sku": "BPI-SPORT-SFS", "variants_summary": "Rainbow Ice, Watermelon Freeze, Snow Cone...", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/bpi-sport-cla-carnitine-50-servings", "item_no": 210}, {"id": 8080917135405, "title": "Black Spider 100 Tabs | Cloma Pharma", "brand": "Cloma Pharma", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/black-spide.jpg?v=1784030830", "sku": "BLACK-SPIDER-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/cloma-pharma-black-spider-fat-burning-venom-100-tablets", "item_no": 211}, {"id": 8356839489581, "title": "JNXSport The Ripper 30 Servings", "brand": "JNX Sports", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/The_ripper_by_jnxsport.jpg?v=1784030289", "sku": "JNXSPORT-THERIPPER-SFS", "variants_summary": "Razor Lime", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/jnxsport-the-ripper-30-servings", "item_no": 212}, {"id": 15134410145837, "title": "Gold L-Carnitine 1000 100 Tablets by Kevin Levrone Signature Series", "brand": "Kevin Levrone", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/kevin-levrone-gold-l-carnitine-1000-in-pakistan-karachi-lahore-islamabad-at-bravo-nutrition.webp?v=1784028793", "sku": "KL-LCARNITINE-SFS", "variants_summary": "100 Tabs", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/gold-l-carnitine-1000-100-tablets-by-kevin-levrone-signature-series", "item_no": 213}, {"id": 8080915464237, "title": "Lipo-6 Black Hers 60 Caps by Nutrex Research", "brand": "Nutrex Research", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Lipo6-Hers-1.jpg?v=1784030980", "sku": "LIPO6-HERS-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/lipo-6-black-hers-60-tablets", "item_no": 214}, {"id": 8080915431469, "title": "Lipo6 Black UC 60 Caps by Nutrex Research", "brand": "Nutrex Research", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/lipo6-black-UC-by-nutrex-research-at-silver-fox-supplement.jpg?v=1784030981", "sku": "NUTREX-LIPO6-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-lipo6-black-60-tablets", "item_no": 215}, {"id": 8080915398701, "title": "Lipo6 Hardcore 60 Caps by Nutrex Research", "brand": "Nutrex Research", "category": "Fat Burners & Weight Loss", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/nutrex-lipo-6-hardcore-fat-burner-60-capules.jpg?v=1784030984", "sku": "LIP06-HARDCORE-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-lipo6-hardcore", "item_no": 216}, {"id": "8352887930925_6000.0", "title": "GATSport Mens Multi+Test", "brand": "GAT Sport", "category": "Testosterone & Hormone Support", "tier": "60 Tabs", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Wellness-Essentials_Mens-Multi-Test_60ct_Prouct-Image.jpg?v=1784030295", "sku": "GATSPORT-MULTITEST-SFS-1", "variants_summary": "60 Tabs", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/gatsport-mens-multi-test", "item_no": 217}, {"id": "8352887930925_10200.0", "title": "GATSport Mens Multi+Test", "brand": "GAT Sport", "category": "Testosterone & Hormone Support", "tier": "150 Tabs", "retail_price": 10200.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Wellness-Essentials_Mens-Multi-Test_150ct_Prouct-Image.jpg?v=1784030298", "sku": "GATSPORT-MULTITEST-SFS-2", "variants_summary": "150 Tabs", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/gatsport-mens-multi-test", "item_no": 218}, {"id": 8082581618733, "title": "GatSport Testrol Gold ES | Boost Male Performance 60 Tabs", "brand": "GAT Sport", "category": "Testosterone & Hormone Support", "tier": "", "retail_price": 7500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/gatsportstestrolgoldes.png?v=1784030766", "sku": "SF-8082581618733", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/gatsport-testrol-gold-es-1", "item_no": 219}, {"id": 8080914120749, "title": "Testrol Original 60 Tabs by GatSport", "brand": "GAT Sport", "category": "Testosterone & Hormone Support", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/GatSportTestrolOriginal.png?v=1784031158", "sku": "TESTROL-ORG-SFS", "variants_summary": "60 Tabs", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/gatsport-testrol-gold-es", "item_no": 220}, {"id": 8390812958765, "title": "VITAMIN T - Multi-Vitamin + Test Booster", "brand": "MuscleMeds", "category": "Testosterone & Hormone Support", "tier": "", "retail_price": 6500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/VITAMIN-T-MULTI-BOX-234257_700x_01785cb5-cd7e-4207-9c9e-7cfd5d1827ec.png?v=1784029454", "sku": "MUSCLEMEDS-VITAMINT-SFS", "variants_summary": "90 Tabs", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/vitamin-t-multi-vitamin-test-booster", "item_no": 221}, {"id": 8391835549741, "title": "ZMA PRO 90 Capsules by ARMY1", "brand": "Army1", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/ARMY1-ZMA-PRO-90CAP.png?v=1784029249", "sku": "ARMY1-ZMA-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/zma-pro-90-capsules-by-army1", "item_no": 222}, {"id": 8080917987373, "title": "Bad Ass Pak Multi-Vitamins & Minerals 30 Sachets", "brand": "Bad Ass", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 11500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Bad-Ass-Pak-Multi-vitamins-Minerals-For-Athletes-30-Sachets-at-silver-fox-supplement.jpg?v=1784030781", "sku": "BADASS-MULTIVITAMIN-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/bad-ass-pak-multi-vitamins-minerals-30-sachets", "item_no": 223}, {"id": 8247625187373, "title": "Core Champs Multivitamin 90 Tabs", "brand": "Core Champs", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 5000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Multi-Vitamin-Transparent_870x1131_d9a68616-6e8f-4dd7-87ce-ffc0051433dc.png?v=1784030422", "sku": "CORECHAMP-MULTI-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/core-champs-multivitamin-90-tabs", "item_no": 224}, {"id": 8080913530925, "title": "Galvanize Nutrition Daily Vitamin 60 Caps", "brand": "Galvanize Nutrition", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 5000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/galvanizedailyvitamin.png?v=1784031212", "sku": "GALVANIZE-DAILY-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/galvanize-nutrition-daily-vitamin-60-caps", "item_no": 225}, {"id": 8080913563693, "title": "Galvanize Nutrition Omega-3 | Fish Oil", "brand": "Galvanize Nutrition", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 5000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/galvanizeomega-3fishoil.png?v=1784031210", "sku": "GALVANIZE-FISH-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/galvanize-nutrition-omega-3-fish-oil", "item_no": 226}, {"id": 15231682412589, "title": "Labrada Marine Collagen Peptides 300g", "brand": "Labrada", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 8500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/LabradaCollagenPeptidesGreenApple-Front_5000x_0ec3b6e4-292f-4038-abfa-6a065124f059.webp?v=1785419975", "sku": "SF-15231682412589", "variants_summary": "Green Apple, Cranberry", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/labrada-marine-collagen-peptides-300g", "item_no": 227}, {"id": 15231707316269, "title": "Labrada, Omega 3 With Vitamin E, 90 Softgel, 90 Servings", "brand": "Labrada", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 6000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Labrada-Omega-3-With-Vitamin-E-90-Softgel-90-Servings.png?v=1785420233", "sku": "SF-15231707316269", "variants_summary": "90 Softgels", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/labrada-omega-3-with-vitamin-e-90-softgel-90-servings", "item_no": 228}, {"id": 8080915857453, "title": "Multivitamin | Muscletech Platinum", "brand": "MuscleTech", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 6300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Muscletech-multivitamins-at-silver-fox-supplement.jpg?v=1784030945", "sku": "MUSCLETECH-MULTIVITAMIN-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-platinum-multivitamin", "item_no": 229}, {"id": 8080915824685, "title": "Muscletech Fish Oil | Platinum 100%", "brand": "MuscleTech", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 5500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Muscletech-platinum-fish-oil-at-silver-fox-supplement.jpg?v=1784030949", "sku": "MUSCLETECH-FISHOIL-SFS", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/muscletech-fish-oil", "item_no": 230}, {"id": 8343882498093, "title": "Nutrex Research Vitadapt | Complete Multivitamins 90 Tabs", "brand": "Nutrex Research", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 7000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Vitadapt.png?v=1784030327", "sku": "NUTREX-VITADAPT-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/nutrex-research-vitadapt-complete-multivitamins-90-tabs", "item_no": 231}, {"id": 8327240876077, "title": "Fish Oil 100 Caps | PROSCIENCE", "brand": "PROSCIENCE", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 4500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Proscience-Fish-Oil-1000-mg-min-800x1000.png?v=1784030389", "sku": "SF-8327240876077", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/fish-oil-100-caps-proscience", "item_no": 232}, {"id": 8471384031277, "title": "Korean Healt Omega Fish Oil | 3 6 9 Softgels  | 60 Softgels", "brand": "Silver Fox Supplement", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 4000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/Korean_Health_Omega_fish_oil_3_6_9.svg?v=1776325687", "sku": "SF-8471384031277", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/korean-healt-omega-fish-oil-3-6-9-softgels-60-softgels", "item_no": 233}, {"id": 15231749554221, "title": "Universal Nutrition Animal Flex® Comprehensive Joint Care™", "brand": "Universal Nutrition", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 15300.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/417234_ANIMAL_Flex_JointCare_44srv_Front.jpg?v=1785421835", "sku": "SF-15231749554221", "variants_summary": "44 Packs", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/universal-nutrition-animal-flex®-comprehensive-joint-care™", "item_no": 234}, {"id": 8080916971565, "title": "FA Napalm Pak 30 Sachets | SFS", "brand": "Xtreme", "category": "Multivitamins & Wellness", "tier": "", "retail_price": 9000.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/FA-Napalm-Pak-Multivitamin-at-silver-fox-supplement.jpg?v=1784030857", "sku": "NAPALM-MULTI-SFS", "variants_summary": "Default Title", "stock_status": "Out of Stock", "product_url": "https://silverfoxsupplement.com/products/fa-napalm-pak-30-sachets", "item_no": 235}, {"id": 15403034214445, "title": "Carborade® 1kg – Carbohydrate Energy Drink | FA Nutrition", "brand": "FA", "category": "Carbohydrates & Energy", "tier": "", "retail_price": 9800.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/carborade-1-kg.jpg?v=1790851905", "sku": "FA-CARBORADE-SFS-1", "variants_summary": "Lime, Melon, Grape", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/carborade®-1kg-carbohydrate-energy-drink-fa-nutrition", "item_no": 236}, {"id": 8087948886061, "title": "Shaker Spider | 3 In 1 Shaker Bottle", "brand": "By SFS", "category": "Gym Accessories & Shakers", "tier": "", "retail_price": 1500.0, "image_url": "https://cdn.shopify.com/s/files/1/0660/4836/0493/files/61JuACWPgJL._SL1500_-removebg.png?v=1784030676", "sku": "SF-8087948886061", "variants_summary": "Default Title", "stock_status": "In Stock", "product_url": "https://silverfoxsupplement.com/products/spider-shaker-3-in-1", "item_no": 237}];
 
     let userQuotes = {}; // id -> { wholesale_price: number, moq: string, remarks: string }
+    let currentCategory = 'all';
     let currentStatusFilter = 'all'; // 'all', 'pending', 'quoted'
+    let currentViewMode = 'cards'; // 'cards' or 'table'
 
-    // Load from localStorage
+    // Load saved quotes from localStorage
     function loadSavedQuotes() {
       try {
         const saved = localStorage.getItem('silverfox_rfq_quotes');
@@ -287,18 +295,15 @@
           userQuotes = JSON.parse(saved);
         }
       } catch (e) {
-        console.error("Failed to load quotes from storage", e);
+        console.error("Storage load error", e);
       }
     }
 
     function saveQuotes() {
       try {
         localStorage.setItem('silverfox_rfq_quotes', JSON.stringify(userQuotes));
-        const indicator = document.getElementById('saveStatus');
-        indicator.innerHTML = '<i class="fa-solid fa-circle-check"></i> Saved';
-        indicator.className = 'inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-full';
       } catch (e) {
-        console.error("Failed to save quotes", e);
+        console.error("Storage save error", e);
       }
     }
 
@@ -308,35 +313,68 @@
       }
       userQuotes[id][field] = value;
 
-      // Update discount badge for that row
-      updateRowDiscount(id);
       saveQuotes();
-      updateDashboardMetrics();
+      updateDynamicUI(id);
+      updateMetrics();
     }
 
-    function updateRowDiscount(id) {
+    function updateDynamicUI(id) {
       const quote = userQuotes[id];
-      const badge = document.getElementById(`discountBadge_${id}`);
       const item = RAW_ITEMS.find(i => String(i.id) === String(id));
-      if (!badge || !item) return;
+      if (!item) return;
 
       const wsPrice = quote && quote.wholesale_price ? parseFloat(quote.wholesale_price) : 0;
       const retPrice = item.retail_price;
 
-      if (wsPrice > 0 && wsPrice < retPrice) {
-        const discountPct = (((retPrice - wsPrice) / retPrice) * 100).toFixed(1);
-        const margin = retPrice - wsPrice;
-        badge.innerHTML = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">-${discountPct}% (Rs. ${margin.toLocaleString()})</span>`;
-        badge.classList.remove('hidden');
-      } else if (wsPrice >= retPrice && wsPrice > 0) {
-        badge.innerHTML = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">No Discount</span>`;
-        badge.classList.remove('hidden');
+      // Card element
+      const card = document.getElementById(`card_${id}`);
+      const discountPill = document.getElementById(`card_discount_${id}`);
+      const statusBadge = document.getElementById(`card_status_${id}`);
+
+      if (wsPrice > 0) {
+        if (card) {
+          card.classList.add('border-emerald-400', 'ring-2', 'ring-emerald-500/10');
+          card.classList.remove('border-slate-200');
+        }
+        if (statusBadge) {
+          statusBadge.innerHTML = '<span class="inline-flex items-center gap-1 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check text-[9px]"></i> Quoted</span>';
+        }
+
+        if (discountPill) {
+          if (wsPrice < retPrice) {
+            const discPct = (((retPrice - wsPrice) / retPrice) * 100).toFixed(1);
+            const margin = retPrice - wsPrice;
+            discountPill.innerHTML = `
+              <div class="flex items-center justify-between text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-lg">
+                <span>🎉 -${discPct}% Wholesale Margin</span>
+                <span>Save Rs. ${margin.toLocaleString()}</span>
+              </div>
+            `;
+            discountPill.classList.remove('hidden');
+          } else {
+            discountPill.innerHTML = `
+              <div class="text-xs font-semibold text-amber-800 bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg text-center">
+                At / Above Retail Price
+              </div>
+            `;
+            discountPill.classList.remove('hidden');
+          }
+        }
       } else {
-        badge.classList.add('hidden');
+        if (card) {
+          card.classList.remove('border-emerald-400', 'ring-2', 'ring-emerald-500/10');
+          card.classList.add('border-slate-200');
+        }
+        if (statusBadge) {
+          statusBadge.innerHTML = '<span class="text-slate-400 text-[10px] font-semibold bg-slate-100 px-2 py-0.5 rounded-full">Pending</span>';
+        }
+        if (discountPill) {
+          discountPill.classList.add('hidden');
+        }
       }
     }
 
-    function updateDashboardMetrics() {
+    function updateMetrics() {
       let quotedCount = 0;
       let totalDiscountPct = 0;
 
@@ -354,39 +392,195 @@
       });
 
       const totalItems = RAW_ITEMS.length;
+      const pendingCount = totalItems - quotedCount;
       const progressPct = ((quotedCount / totalItems) * 100).toFixed(0);
-      const avgDiscount = quotedCount > 0 ? (totalDiscountPct / quotedCount).toFixed(1) : '0.0';
+      const avgDiscount = quotedCount > 0 ? (totalDiscountPct / quotedCount).toFixed(1) : '0';
 
-      document.getElementById('metricQuotedCount').innerText = quotedCount;
-      document.getElementById('metricProgressPct').innerText = `${progressPct}%`;
-      document.getElementById('metricAvgDiscount').innerText = `${avgDiscount}%`;
-      document.getElementById('bottomProgressBadge').innerText = `${quotedCount} / ${totalItems} Quoted (${progressPct}%)`;
+      // Update counters in tabs
+      document.getElementById('countAll').innerText = totalItems;
+      document.getElementById('countPending').innerText = pendingCount;
+      document.getElementById('countQuoted').innerText = quotedCount;
+
+      // Update sticky bottom progress
+      document.getElementById('bottomProgressCount').innerText = `${quotedCount} / ${totalItems} Quoted`;
+      document.getElementById('bottomProgressPct').innerText = `${progressPct}%`;
+      document.getElementById('bottomProgressBar').style.width = `${progressPct}%`;
+      document.getElementById('bottomAvgDiscount').innerText = `${avgDiscount}%`;
     }
 
-    function renderTable() {
-      const tbody = document.getElementById('productsTableBody');
+    function getFilteredItems() {
       const search = document.getElementById('searchInput').value.toLowerCase().trim();
-      const category = document.getElementById('categorySelect').value;
 
-      const filtered = RAW_ITEMS.filter(it => {
-        // Category filter
-        if (category !== 'all' && it.category !== category) return false;
+      return RAW_ITEMS.filter(it => {
+        // Category Filter
+        if (currentCategory !== 'all' && it.category !== currentCategory) return false;
 
-        // Status filter
+        // Status Filter
         const hasQuote = userQuotes[it.id] && userQuotes[it.id].wholesale_price && parseFloat(userQuotes[it.id].wholesale_price) > 0;
         if (currentStatusFilter === 'quoted' && !hasQuote) return false;
         if (currentStatusFilter === 'pending' && hasQuote) return false;
 
-        // Search text
+        // Search Filter
         if (search) {
-          const target = (it.title + ' ' + it.brand + ' ' + (it.sku || '') + ' ' + it.category + ' ' + (it.tier || '')).toLowerCase();
-          if (!target.includes(search)) return false;
+          const blob = (it.title + ' ' + it.brand + ' ' + (it.sku || '') + ' ' + (it.tier || '')).toLowerCase();
+          if (!blob.includes(search)) return false;
         }
 
         return true;
       });
+    }
 
-      document.getElementById('filteredCountText').innerText = `Showing ${filtered.length} of ${RAW_ITEMS.length} products`;
+    function renderCards() {
+      const container = document.getElementById('cardsContainer');
+      const filtered = getFilteredItems();
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        document.getElementById('noResultsState').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('noResultsState').classList.add('hidden');
+
+      container.innerHTML = filtered.map(it => {
+        const q = userQuotes[it.id] || { wholesale_price: '', moq: '', remarks: '' };
+        const wsPrice = q.wholesale_price ? parseFloat(q.wholesale_price) : 0;
+        const isQuoted = wsPrice > 0;
+
+        let discountHtml = '';
+        if (isQuoted && wsPrice < it.retail_price) {
+          const discPct = (((it.retail_price - wsPrice) / it.retail_price) * 100).toFixed(1);
+          const margin = it.retail_price - wsPrice;
+          discountHtml = `
+            <div class="flex items-center justify-between text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-lg">
+              <span>🎉 -${discPct}% Wholesale Margin</span>
+              <span>Save Rs. ${margin.toLocaleString()}</span>
+            </div>
+          `;
+        }
+
+        const cardBorderClass = isQuoted ? 'border-emerald-400 ring-2 ring-emerald-500/10' : 'border-slate-200';
+        const statusBadgeHtml = isQuoted 
+          ? '<span class="inline-flex items-center gap-1 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-check text-[9px]"></i> Quoted</span>'
+          : '<span class="text-slate-400 text-[10px] font-semibold bg-slate-100 px-2 py-0.5 rounded-full">Pending</span>';
+
+        const tierBadge = it.tier ? `<span class="inline-block bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-md">${it.tier}</span>` : '';
+
+        return `
+          <div class="bg-white rounded-2xl border ${cardBorderClass} p-3.5 shadow-sm transition-all duration-200 flex flex-col justify-between" id="card_${it.id}">
+            
+            <!-- Card Header: Item No, Brand, Status -->
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 font-extrabold text-[11px] flex items-center justify-center">
+                    #${it.item_no}
+                  </span>
+                  <span class="text-xs font-extrabold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md">
+                    ${it.brand}
+                  </span>
+                </div>
+                <div id="card_status_${it.id}">
+                  ${statusBadgeHtml}
+                </div>
+              </div>
+
+              <!-- Product Info: Image + Title + Retail -->
+              <div class="flex items-start gap-3 mb-3">
+                <!-- Thumbnail with Tap to Zoom -->
+                <div 
+                  onclick="openLightbox('${it.image_url}', '${escapeHtml(it.title)}', '${it.retail_price}')" 
+                  class="w-16 h-16 rounded-xl border border-slate-200 bg-slate-50 p-1 flex items-center justify-center shrink-0 cursor-pointer hover:border-blue-400 transition"
+                  title="Tap to enlarge photo"
+                >
+                  <img 
+                    src="${it.image_url}" 
+                    alt="${it.title}" 
+                    class="max-w-full max-h-full object-contain"
+                    loading="lazy"
+                    onerror="this.src='https://placehold.co/120x120?text=No+Photo'"
+                  >
+                </div>
+
+                <!-- Title & Price -->
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-bold text-slate-900 text-sm leading-snug line-clamp-2">
+                    ${it.title}
+                  </h3>
+                  <div class="flex flex-wrap items-center gap-1.5 mt-1">
+                    ${tierBadge}
+                    <span class="text-[11px] text-slate-400 truncate">${it.category}</span>
+                  </div>
+                  <div class="mt-1.5 flex items-baseline gap-1.5">
+                    <span class="text-xs text-slate-500 font-medium">SilverFox Retail:</span>
+                    <span class="text-sm font-extrabold text-slate-900">Rs. ${it.retail_price.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quotation Input Box (Mobile-First Touch Focused) -->
+            <div class="bg-blue-50/70 border border-blue-200/90 rounded-xl p-3 space-y-2 mt-auto">
+              <div>
+                <label class="block text-[11px] font-bold text-blue-900 mb-1 flex items-center justify-between">
+                  <span class="flex items-center gap-1">
+                    <i class="fa-solid fa-hand-holding-dollar text-blue-600"></i>
+                    <span>Your Wholesale Rate (PKR)</span>
+                  </span>
+                  <span class="text-[10px] text-blue-600 font-semibold uppercase">Mandatory</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">Rs.</span>
+                  <input 
+                    type="number" 
+                    inputmode="numeric" 
+                    pattern="[0-9]*"
+                    placeholder="Enter rate (e.g. ${Math.round(it.retail_price * 0.75)})" 
+                    value="${q.wholesale_price || ''}"
+                    oninput="onQuoteChange('${it.id}', 'wholesale_price', this.value)"
+                    class="w-full pl-9 pr-3 py-2.5 text-base font-extrabold text-blue-950 bg-white border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-300 placeholder:font-normal transition shadow-xs"
+                  >
+                </div>
+              </div>
+
+              <!-- Live Discount Feedback -->
+              <div id="card_discount_${it.id}" class="${discountHtml ? '' : 'hidden'}">
+                ${discountHtml}
+              </div>
+
+              <!-- Compact Sub-fields: MOQ & Notes -->
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <div>
+                  <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">MOQ</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. 6 pcs" 
+                    value="${q.moq || ''}"
+                    oninput="onQuoteChange('${it.id}', 'moq', this.value)"
+                    class="w-full py-1.5 px-2 text-xs font-semibold bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-300"
+                  >
+                </div>
+                <div>
+                  <label class="block text-[10px] font-semibold text-slate-600 mb-0.5">Stock / Expiry Note</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. 2027 stock" 
+                    value="${q.remarks || ''}"
+                    oninput="onQuoteChange('${it.id}', 'remarks', this.value)"
+                    class="w-full py-1.5 px-2 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-300"
+                  >
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      const filtered = getFilteredItems();
 
       if (filtered.length === 0) {
         tbody.innerHTML = '';
@@ -401,116 +595,152 @@
         let discountBadgeHtml = '';
         if (wsPrice > 0 && wsPrice < it.retail_price) {
           const disc = (((it.retail_price - wsPrice) / it.retail_price) * 100).toFixed(1);
-          const margin = it.retail_price - wsPrice;
-          discountBadgeHtml = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">-${disc}% (Rs. ${margin.toLocaleString()})</span>`;
+          discountBadgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">-${disc}%</span>`;
         }
 
-        const tierBadge = it.tier ? `<span class="inline-block bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-1.5 py-0.5 rounded mt-0.5">${it.tier}</span>` : '';
-
         return `
-          <tr class="hover:bg-slate-50/80 transition-colors" id="row_${it.id}">
-            <td class="py-3 px-3 text-center text-xs font-bold text-slate-400 border-r border-slate-100">
-              ${it.item_no}
-            </td>
-            <td class="py-2.5 px-3 text-center">
-              <div class="w-12 h-12 rounded-lg border border-slate-200 p-1 bg-white flex items-center justify-center mx-auto overflow-hidden shadow-xs">
-                <img 
-                  src="${it.image_url}" 
-                  alt="${it.title}" 
-                  class="max-w-full max-h-full object-contain"
-                  loading="lazy"
-                  onerror="this.src='https://placehold.co/100x100?text=No+Photo'"
-                >
-              </div>
-            </td>
-            <td class="py-3 px-4">
-              <div class="font-bold text-slate-900 text-sm leading-snug">${it.title}</div>
-              <div class="flex flex-wrap items-center gap-1.5 mt-1">
-                <span class="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">${it.brand}</span>
-                <span class="text-xs text-slate-400">• ${it.category}</span>
-                ${tierBadge}
-              </div>
-            </td>
-            <td class="py-3 px-3 text-right">
-              <span class="font-extrabold text-slate-900 text-sm">Rs. ${it.retail_price.toLocaleString()}</span>
-              <div class="text-[10px] text-slate-400">Website Retail</div>
-            </td>
-            <td class="py-2.5 px-4 bg-blue-50/40 border-x border-blue-100/80">
-              <div class="space-y-1">
-                <div class="relative">
-                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rs.</span>
-                  <input 
-                    type="number" 
-                    placeholder="Enter Wholesale Rate" 
-                    value="${q.wholesale_price || ''}"
-                    oninput="onQuoteChange('${it.id}', 'wholesale_price', this.value)"
-                    class="w-full pl-9 pr-3 py-1.5 text-sm font-extrabold text-blue-900 bg-white border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-slate-300 placeholder:font-normal"
-                  >
-                </div>
-                <div id="discountBadge_${it.id}" class="${discountBadgeHtml ? '' : 'hidden'}">
-                  ${discountBadgeHtml}
-                </div>
-              </div>
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-2.5 px-2 text-center text-xs font-bold text-slate-400">#${it.item_no}</td>
+            <td class="py-2 px-2 text-center">
+              <img src="${it.image_url}" class="w-10 h-10 object-contain mx-auto rounded border border-slate-200" loading="lazy">
             </td>
             <td class="py-2.5 px-3">
-              <input 
-                type="text" 
-                placeholder="e.g. 6 pcs" 
-                value="${q.moq || ''}"
-                oninput="onQuoteChange('${it.id}', 'moq', this.value)"
-                class="w-full py-1.5 px-2.5 text-xs text-center font-medium bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-300"
-              >
+              <div class="font-bold text-slate-900 text-xs">${it.title}</div>
+              <div class="text-[10px] text-blue-700 font-semibold">${it.brand} ${it.tier ? '• ' + it.tier : ''}</div>
             </td>
-            <td class="py-2.5 px-4">
+            <td class="py-2.5 px-2 text-right font-bold text-xs text-slate-800">Rs. ${it.retail_price.toLocaleString()}</td>
+            <td class="py-2 px-3 bg-blue-50/50">
               <input 
-                type="text" 
-                placeholder="Stock / Expiry note..." 
-                value="${q.remarks || ''}"
-                oninput="onQuoteChange('${it.id}', 'remarks', this.value)"
-                class="w-full py-1.5 px-3 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-slate-300"
+                type="number" 
+                inputmode="numeric" 
+                placeholder="Rate" 
+                value="${q.wholesale_price || ''}" 
+                oninput="onQuoteChange('${it.id}', 'wholesale_price', this.value)"
+                class="w-full py-1 px-2 text-xs font-bold bg-white border border-blue-300 rounded"
               >
+              <div class="mt-0.5">${discountBadgeHtml}</div>
+            </td>
+            <td class="py-2 px-2">
+              <input type="text" placeholder="MOQ" value="${q.moq || ''}" oninput="onQuoteChange('${it.id}', 'moq', this.value)" class="w-full py-1 px-1.5 text-xs text-center border rounded">
+            </td>
+            <td class="py-2 px-3">
+              <input type="text" placeholder="Notes" value="${q.remarks || ''}" oninput="onQuoteChange('${it.id}', 'remarks', this.value)" class="w-full py-1 px-2 text-xs border rounded">
             </td>
           </tr>
         `;
       }).join('');
     }
 
-    function applyFilters() {
-      renderTable();
+    function renderCurrentView() {
+      if (currentViewMode === 'cards') {
+        document.getElementById('cardsContainer').classList.remove('hidden');
+        document.getElementById('tableViewContainer').classList.add('hidden');
+        renderCards();
+      } else {
+        document.getElementById('cardsContainer').classList.add('hidden');
+        document.getElementById('tableViewContainer').classList.remove('hidden');
+        renderTable();
+      }
+    }
+
+    function toggleViewMode() {
+      currentViewMode = currentViewMode === 'cards' ? 'table' : 'cards';
+      const btn = document.getElementById('viewToggleBtn');
+      btn.innerHTML = currentViewMode === 'cards' ? '<i class="fa-solid fa-table-list"></i>' : '<i class="fa-solid fa-grip-vertical"></i>';
+      renderCurrentView();
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-chip').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white border border-blue-500 shadow-xs transition';
+        } else {
+          btn.className = 'cat-chip whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition';
+        }
+      });
+      renderCurrentView();
     }
 
     function setStatusFilter(status) {
       currentStatusFilter = status;
-      document.getElementById('btnFilterAll').className = status === 'all' ? 'px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-sm transition' : 'px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition';
-      document.getElementById('btnFilterPending').className = status === 'pending' ? 'px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-sm transition' : 'px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition';
-      document.getElementById('btnFilterQuoted').className = status === 'quoted' ? 'px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-sm transition' : 'px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition';
-      renderTable();
+      document.getElementById('tabAll').className = status === 'all' ? 'px-2.5 py-1 rounded-md bg-white text-slate-900 font-bold shadow-xs transition' : 'px-2.5 py-1 rounded-md text-slate-600 font-semibold transition';
+      document.getElementById('tabPending').className = status === 'pending' ? 'px-2.5 py-1 rounded-md bg-white text-slate-900 font-bold shadow-xs transition' : 'px-2.5 py-1 rounded-md text-slate-600 font-semibold transition';
+      document.getElementById('tabQuoted').className = status === 'quoted' ? 'px-2.5 py-1 rounded-md bg-white text-slate-900 font-bold shadow-xs transition' : 'px-2.5 py-1 rounded-md text-slate-600 font-semibold transition';
+      renderCurrentView();
     }
 
-    function bulkFill10Percent() {
-      if (!confirm("Would you like to auto-calculate test wholesale prices at 20% discount off retail to preview how the sheet works?")) return;
-      RAW_ITEMS.forEach(it => {
-        if (!userQuotes[it.id] || !userQuotes[it.id].wholesale_price) {
-          const ws = Math.round(it.retail_price * 0.8 / 100) * 100;
-          userQuotes[it.id] = {
-            wholesale_price: ws,
-            moq: '6 pcs',
-            remarks: 'Fresh 2026/2027 Stock'
-          };
-        }
-      });
-      saveQuotes();
-      updateDashboardMetrics();
-      renderTable();
-    }
-
-    function clearAllData() {
-      if (confirm("Are you sure you want to clear all entered wholesale prices?")) {
-        userQuotes = {};
-        saveQuotes();
-        updateDashboardMetrics();
-        renderTable();
+    function onSearchInput() {
+      const val = document.getElementById('searchInput').value;
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (val) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
       }
+      renderCurrentView();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderCurrentView();
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      currentCategory = 'all';
+      currentStatusFilter = 'all';
+      selectCategory('all');
+      setStatusFilter('all');
+    }
+
+    function jumpToNextPending() {
+      const nextPending = RAW_ITEMS.find(it => !userQuotes[it.id] || !userQuotes[it.id].wholesale_price || parseFloat(userQuotes[it.id].wholesale_price) <= 0);
+      if (!nextPending) {
+        alert("Awesome! All 237 products have been quoted!");
+        return;
+      }
+      
+      // If pending filter is not active, scroll to it
+      if (currentStatusFilter === 'quoted') {
+        setStatusFilter('pending');
+      }
+
+      // Switch to card view if needed
+      if (currentViewMode !== 'cards') {
+        toggleViewMode();
+      }
+
+      setTimeout(() => {
+        const el = document.getElementById(`card_${nextPending.id}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const input = el.querySelector('input[type="number"]');
+          if (input) {
+            input.focus();
+            input.classList.add('ring-4', 'ring-blue-400');
+            setTimeout(() => input.classList.remove('ring-4', 'ring-blue-400'), 1500);
+          }
+        }
+      }, 100);
+    }
+
+    // Lightbox modal functions
+    function openLightbox(imgUrl, title, price) {
+      document.getElementById('lightboxImg').src = imgUrl;
+      document.getElementById('lightboxTitle').innerText = title;
+      document.getElementById('lightboxPrice').innerText = 'SilverFox Retail: Rs. ' + parseInt(price).toLocaleString();
+      document.getElementById('imageLightbox').classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      document.getElementById('imageLightbox').classList.add('hidden');
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/'/g, "\'");
     }
 
     // Export filled quotation to Excel (.xlsx) using SheetJS
@@ -566,22 +796,22 @@
         return;
       }
 
-      // First export Excel automatically so they have the file ready
+      // First export Excel automatically so they have the file ready on their device
       exportToExcel();
 
       const msg = encodeURIComponent(
         `Assalam-o-Alaikum PakNutrition Team!\n\n` +
-        `Main SilverFox Supplement se baat kar raha hoon. Hum ne aap ki B2B RFQ Sheet review kar li hai aur ${quotedCount} products ke wholesale rates enter kar diye hain.\n\n` +
-        `Main completed quotation Excel file sath attach kar raha hoon. Kindly review farmayein taake hum contract finalize kar sakein.\n\n` +
+        `Main SilverFox Supplement se baat kar raha hoon. Hum ne B2B Portal par ${quotedCount} products ke wholesale rates aur MOQs enter kar diye hain.\n\n` +
+        `Main downloaded quotation Excel file sath attach kar raha hoon. Kindly review farmayein taake contract finalize ho sakay.\n\n` +
         `Shukriya!`
       );
       window.open(`https://wa.me/?text=${msg}`, '_blank');
     }
 
-    // Init
+    // Initial Bootstrap
     loadSavedQuotes();
-    updateDashboardMetrics();
-    renderTable();
+    updateMetrics();
+    renderCurrentView();
   </script>
 </body>
 </html>
